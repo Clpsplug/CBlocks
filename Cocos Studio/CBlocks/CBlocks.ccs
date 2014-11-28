@@ -1,0 +1,17 @@
+<Solution>
+  <PropertyGroup Name="CBlocks" Version="2.0.2.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Project Name="MainScene.csd" />
+        <Image Name="Back.png" />
+        <Image Name="playfield.png" />
+        <Image Name="CTBPanel.png" />
+        <Image Name="ScorePanel.png" />
+        <Image Name="SPMPanel.png" />
+        <Image Name="TimePanel.png" />
+        <Image Name="digits4iOS.png" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
