@@ -23,13 +23,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     
     // turn on display FPS
-    director->setDisplayStats(false);
+    director->setDisplayStats(true);
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
     
     //Treat every screen as 320x480
-    glview->setDesignResolutionSize(320, 480, ResolutionPolicy::SHOW_ALL);
+    glview->setDesignResolutionSize(320, 568, ResolutionPolicy::SHOW_ALL);
+    
+    //Add Resources/img to the search path
+    FileUtils::getInstance()->addSearchPath("img");
 
     // create a scene. it's an autorelease object
     auto scene = MainScene::createScene();
