@@ -101,9 +101,15 @@ Blocks* MainScene::getBlockAt(const cocos2d::Vec2& pos)
 
 Blocks* MainScene::getBlockAtByPixel(const cocos2d::Vec2& pixelPos)
 {
+<<<<<<< HEAD
      // Absolute pos to stage pos
      auto pfPosition = _playField->convertToNodeSpace(pixelPos);
      // stage pos to grid pos
+=======
+     // 絶対座標をステージ中の位置に変換
+     auto pfPosition = _playField->convertToNodeSpace(pixelPos);
+     // ステージ中の位置をグリッド座標に変換
+>>>>>>> 948d42a4090866610e55bc611d27018cfec57c86
      auto gridPosition = Blocks::pixelToGrid(pfPosition);
      return this->getBlockAt(gridPosition);
  }
