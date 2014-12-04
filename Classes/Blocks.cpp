@@ -13,8 +13,8 @@
 using namespace cocos2d;
 
 Blocks::Blocks()
+: _state(State::STANDSTILL)
 {
-    
 }
 
 Blocks::~Blocks()

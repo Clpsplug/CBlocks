@@ -18,6 +18,7 @@ const int VERTICAL_COUNT = 9;
 
 MainScene::MainScene()
 : _playField(NULL)
+, _curBlock(nullptr)
 {
     
 }
@@ -25,6 +26,7 @@ MainScene::MainScene()
 MainScene::~MainScene()
 {
     CC_SAFE_RELEASE_NULL(_playField);
+    CC_SAFE_RELEASE_NULL(_curBlock);
 }
 
 Scene* MainScene::createScene()
@@ -74,6 +76,56 @@ bool MainScene::init()
     //Add this sprite to parent node
     this->addChild(backGround);
     this->addChild(_playField);
+    
+    
+    
+    // Create a touch event listener
+    auto listener = EventListenerTouchOneByOne::create();
+    // When touched
+    listener->onTouchBegan = [this](Touch* touch, Event* event) {
+            auto position = touch->getLocation();
+            // Get the block under the finger...
+            auto block = this->getBlockAtByPixel(position);
+        
+            // And make it selected
+            this->setCurBlock(block);
+            return true;
+    };
+    // And when dragged...
+    listener->onTouchMoved = [this](Touch* touch, Event* event) {
+            // get the block in the destination
+            auto nextBlock = this->getBlockAtByPixel(touch->getLocation());
+        
+            // if both selected block and the block in the destination exists, and are different
+            if (_curBlock != nullptr &&
+                nextBlock != nullptr &&
+                _curBlock != nextBlock) {
+                
+                // and if those blocks are standstill...
+                if (_curBlock->isStill() && nextBlock->isStill()) {
+                    auto cp = _curBlock->getBlockPos();
+                    auto np = nextBlock->getBlockPos();
+                    
+                    // and finally, if those are neighboring up/downwards or right/left side...
+                    // that is the distance between them squared is equals to 1...
+                    if (cp.distanceSquared(np) == 1) {
+                        // We'll swap the block
+                        this->swapBlocks(_curBlock, nextBlock);
+                        
+                        // And unselect the block
+                        this->setCurBlock(nullptr);
+                    }
+                }
+            }
+    };
+    // If the finger is released (or swapping canceled...)
+    listener->onTouchEnded = listener->onTouchCancelled = [this](Touch* touch, Event* event) {
+            // Unselect the block
+            this->setCurBlock(nullptr);
+    };
+    // Add those event listener
+    this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
+    
 
     return true;
 }
@@ -101,18 +153,61 @@ Blocks* MainScene::getBlockAt(const cocos2d::Vec2& pos)
 
 Blocks* MainScene::getBlockAtByPixel(const cocos2d::Vec2& pixelPos)
 {
-<<<<<<< HEAD
      // Absolute pos to stage pos
      auto pfPosition = _playField->convertToNodeSpace(pixelPos);
      // stage pos to grid pos
-=======
-     // 絶対座標をステージ中の位置に変換
-     auto pfPosition = _playField->convertToNodeSpace(pixelPos);
-     // ステージ中の位置をグリッド座標に変換
->>>>>>> 948d42a4090866610e55bc611d27018cfec57c86
      auto gridPosition = Blocks::pixelToGrid(pfPosition);
      return this->getBlockAt(gridPosition);
- }
+}
+
+void MainScene::moveBlock(Blocks *block, const cocos2d::Vec2& blockPos)
+{
+    // クッキーのグリッド座標を設定
+    block->setBlockPos(blockPos);
+    // クッキーの表示位置を調整する
+    block->adjustPos();
+}
+
+bool MainScene::swapBlocks(Blocks *block0, Blocks *block1)
+{
+    // get the position in PIXEL
+    auto position0 = block0->getPosition();
+    auto position1 = block1->getPosition();
+    
+    // also get the position in GRID
+    auto blockPosition0 = block0->getBlockPos();
+    auto blockPosition1 = block1->getBlockPos();
+    
+    // make them as being swapped
+    block0->setState(Blocks::State::SWAPPED);
+    block1->setState(Blocks::State::SWAPPED);
+    
+    /** function to add a motion
+     *  @param block block to move
+     *  @param toPosition destination in PIXEL
+     *  @param toBlockPosition destination in GRID
+     */
+    auto addMoveAnimation = [this](Blocks *block, Vec2 toPosition, Vec2 toBlockPosition)
+    {
+        // time it takes to move
+        const auto duration = 0.1;
+        auto fromPosition = block->getPosition();
+        
+        block->runAction(Sequence::create(MoveTo::create(duration, toPosition),
+                                           CallFuncN::create([=](Node *node) {
+            auto block = dynamic_cast<Blocks *>(node);
+            // move the block here
+            this->moveBlock(block, toBlockPosition);
+            // make it as standstill
+            block->setState(Blocks::State::STANDSTILL);
+        }), NULL));
+    };
+    
+    // add the motions
+    addMoveAnimation(block0, position1, blockPosition1);
+    addMoveAnimation(block1, position0, blockPosition0);
+    return true;
+}
 
 //Refresh method
 void MainScene::update(float dt)

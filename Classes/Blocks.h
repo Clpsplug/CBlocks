@@ -34,6 +34,15 @@ public:
         COUNT //Last one will represent the number of contents in this enum. Ingenious trick!
     };
     
+    enum class State{
+        //The block will be in those 5 states:
+        STANDSTILL,
+        APPEARING,
+        DROPPING,
+        SWAPPED,
+        DELETED
+    };
+    
     static int getSize(){
         return BLOCK_SIZE;
     }
@@ -58,7 +67,15 @@ public:
     /**Adjusts the position of blocks into the current position in grid.
      */
     void adjustPos();
-
+    
+    /** Tells if the block specified is standing still
+     *  @return True if yes
+     */
+    bool isStill(){
+        return _state == State::STANDSTILL;
+    }
+    
+    CC_SYNTHESIZE(State, _state, State);
     CC_SYNTHESIZE_READONLY_PASS_BY_REF(cocos2d::Vec2, _blockPos, BlockPos); //Position of Block in GRID
     CC_SYNTHESIZE_READONLY(Sort, _blockSort, BlockSort);
     CREATE_FUNC(Blocks);
