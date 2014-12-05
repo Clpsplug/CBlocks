@@ -19,6 +19,13 @@ const int VERTICAL_COUNT = 9;
 MainScene::MainScene()
 : _playField(NULL)
 , _curBlock(nullptr)
+, _score(0)
+, _aniScore(0)
+, _combo(0)
+, _simCount(0)
+, _time(0)
+, _scoreLabel(nullptr)
+, _timeLabel(nullptr)
 {
     
 }
@@ -27,6 +34,8 @@ MainScene::~MainScene()
 {
     CC_SAFE_RELEASE_NULL(_playField);
     CC_SAFE_RELEASE_NULL(_curBlock);
+    CC_SAFE_RELEASE_NULL(_scoreLabel);
+    CC_SAFE_RELEASE_NULL(_timeLabel);
 }
 
 Scene* MainScene::createScene()
@@ -52,11 +61,19 @@ bool MainScene::init()
     //Get resolution size
     auto size = director->getWinSize();
 
-    //Create background sprite
+    //Create a background sprite
     auto backGround = Sprite::create("Back.png");
     
     //Set where to show the sprite; this time it fills the screen up
     backGround->setPosition(cocos2d::Vec2(size.width / 2.0, size.height / 2.0));
+    
+    // Create infobox sprite(s)
+    auto scorePanel = Sprite::create("ScorePanel.png");
+    auto timePanel = Sprite::create("TimePanel.png");
+    
+    //Set where to show those sprites...
+    scorePanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 10.0f));
+    timePanel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 - 10.0f, -timePanel->getContentSize().height / 2 + size.height - 10.0f));
     
     // make a node, save it to _playField
     this->setPlayField((Sprite::create("playfield.png")));
@@ -73,10 +90,27 @@ bool MainScene::init()
     //描画位置設定！
     _playField->setPosition(cocos2d::Vec2(size.width / 2.0, size.height / 2.0));
 
-    //Add this sprite to parent node
+    //Add those sprites to parent node
     this->addChild(backGround);
     this->addChild(_playField);
+    this->addChild(scorePanel);
+    this->addChild(timePanel);
     
+    // Create Labels for actual info
+    // Score Label
+    auto label = Label::createWithCharMap("digits.png", 17, 17, '0');
+    this->addChild(label);
+    label->setScaleX(0.67f);
+    label->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width + 10.0f - 7.0f, -scorePanel->getContentSize().height/2 + size.height - 32.0f));
+    label->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
+    this->setScoreLabel(label);
+    
+    auto timeLabel = Label::createWithCharMap("digits.png", 17, 17, '0');
+    this->addChild(timeLabel);
+    timeLabel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 + 52.0f, -timePanel->getContentSize().height/2 + size.height - 32.0f));
+    timeLabel->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
+    this->setTimeLabel(timeLabel);
+
     
     
     // Create a touch event listener
@@ -276,10 +310,25 @@ bool MainScene::checkDeletion()
     }
     //if any of them are deleted
     if (finalDeletionList.size() >= 1) {
+        _simCount=0;
         // delete the block NOW!
         for (auto deletion : finalDeletionList) {
+            if (deletion->isStill()){
+                _simCount++;
+            }
             this->deleteBlock(deletion);
         }
+        
+        // Play with score
+        _combo++; // +1 to combo
+        /**Score system
+         * Base Score = 10 + (# of blocks deleted simultaneously - 3)
+         * Combo Bonus = 2 to the power (# of combo), MAXIMUM = 16384
+         * Score gained = Base Score * Combo Bonus
+         */
+        auto baseScore = 10 + _simCount - 3;
+        auto comboMultiplyer = (_combo < 15 ? _combo - 1 : 15);
+        _score = _score + baseScore * powf(2.0f,(comboMultiplyer));
         return true;
     }
     else{
@@ -377,4 +426,24 @@ void MainScene::update(float dt)
     
     // Try to delete what to delete
     this->checkDeletion();
+    
+    // Animate the score! (My favorite animation)
+    if (_score - _aniScore > 3){
+        _aniScore = _aniScore + round((_score - _aniScore) / 3);
+    }
+    else{
+        if (_score > _aniScore){
+            _aniScore = _aniScore + 1;
+        }
+        else{
+            _aniScore = _score;
+        }
+    }
+    
+    // Timer
+    _time += dt;
+    
+    // Display the score!
+    this->getScoreLabel()->setString(StringUtils::toString(_aniScore));
+    this->getTimeLabel()->setString(StringUtils::toString(round(_time)));
 }

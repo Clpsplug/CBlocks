@@ -95,6 +95,20 @@ public:
     static cocos2d::Scene * createScene();
     CREATE_FUNC(MainScene);
     
+    /// Current Score
+    CC_SYNTHESIZE(int, _score, Score);
+    // Score for animation
+    CC_SYNTHESIZE(int, _aniScore, AniScore);
+    /// Current Combo
+    CC_SYNTHESIZE(int, _combo, Combo);
+    /// Big Explosion Counter (Simultaneous deletion)
+    CC_SYNTHESIZE(int, _simCount, SimCount);
+    /// Time
+    CC_SYNTHESIZE(float, _time, Time);
+    //Score Label (Atlaslabel)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _scoreLabel, ScoreLabel);
+    //Time Label (AtlasLabel)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _timeLabel, TimeLabel);
     /// Vector for saving blocks
     CC_SYNTHESIZE(BlockVct, _blocks, Blocks);
     /// Node to put blocks
