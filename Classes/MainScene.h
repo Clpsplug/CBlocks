@@ -59,6 +59,38 @@ public:
      */
     bool swapBlocks(Blocks* block0, Blocks* block1);
     
+    
+    /** Check if a specified block can be deleted. This will only check "3-block deletion," and this works well
+     *  @param block Starting block
+     *  @return Vector containing the block to be deleted
+     */
+    BlockVct checkNeighboringBlocks(Blocks* block);
+    
+    /** Checks if any block on the field can be deleted, and if so, set them as DELETED
+     *  @return whether they are deleted or not
+     */
+    bool checkDeletion();
+    
+    /** remove given blocks form the field
+     *  effect appiled.
+     *  @param block to be deleted
+     */
+    void deleteBlock(Blocks* block);
+    
+    
+    /** checks if the block can be deleted, and if it can, drops it.
+     *  @param block in question
+     *  @return whether it fell or not
+     */
+    bool dropBlock(Blocks *block);
+    
+    /** look for the empty spot in the field, and returns the block spawned.
+     *  if nothing spawned, an empty vector will be returned
+     *  @return list of block spawned
+     */
+    cocos2d::Vector<Blocks*> checkSpawn();
+    
+    
     //things to do when creating this scene
     static cocos2d::Scene * createScene();
     CREATE_FUNC(MainScene);

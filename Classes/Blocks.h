@@ -36,11 +36,11 @@ public:
     
     enum class State{
         //The block will be in those 5 states:
-        STANDSTILL,
-        APPEARING,
-        DROPPING,
-        SWAPPED,
-        DELETED
+        STANDSTILL, //Doing Nothing
+        SPAWNING, //Spawning into field
+        DROPPING, //Dropping
+        SWAPPED, //Being Swapped
+        DELETED //Being deteted
     };
     
     static int getSize(){
