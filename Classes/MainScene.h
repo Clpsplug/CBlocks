@@ -10,6 +10,7 @@
 #define ComboBlocks_MainScene_h
 
 #include "cocos2d.h"
+#include "ADX2Manager.h"
 #include "Blocks.h"
 
 typedef cocos2d::Vector<Blocks *> BlockVct;
@@ -26,7 +27,7 @@ protected:
 public:
     
     void update(float dt); //update method
-    //void onEnterTransitionDidFinish() override; //called when transisiton is over
+    void onEnterTransitionDidFinish() override; //called when transisiton is over
     
     /** Add block specified
      *  @param block to be added
@@ -90,6 +91,12 @@ public:
      */
     cocos2d::Vector<Blocks*> checkSpawn();
     
+    /** determines if music should change - by means of ComboLevel.
+     * @return TRUE if it's time to change
+     */
+    bool shouldChangeMusic();
+    
+    
     
     //things to do when creating this scene
     static cocos2d::Scene * createScene();
@@ -105,6 +112,10 @@ public:
     CC_SYNTHESIZE(int, _simCount, SimCount);
     /// Time
     CC_SYNTHESIZE(float, _time, Time);
+    /// Combo Level (determines the BGM)
+    CC_SYNTHESIZE(float, _comboLevel, ComboLevel);
+    /// Current Combo Level (Load Reduction)
+    CC_SYNTHESIZE(int, _curComboLevel, CurComboLevel);
     //Score Label (Atlaslabel)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _scoreLabel, ScoreLabel);
     //Time Label (AtlasLabel)
@@ -115,6 +126,8 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Node*, _playField, PlayField);
     /// Block being selected
     CC_SYNTHESIZE_RETAIN(Blocks *, _curBlock, CurBlock);
+    /// ADX2 Cue Sheet
+    CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cueSheet, CueSheet);
     
 };
 

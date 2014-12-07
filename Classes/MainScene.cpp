@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "MainScene.h"
+#include "main.h"
 
 using namespace cocos2d;
 
@@ -24,10 +25,31 @@ MainScene::MainScene()
 , _combo(0)
 , _simCount(0)
 , _time(0)
+, _comboLevel(0.0f)
+, _curComboLevel(0.0f)
 , _scoreLabel(nullptr)
 , _timeLabel(nullptr)
+, _cueSheet(nullptr)
 {
+    // Initialize ADX2
+    CriAtomExStandardVoicePoolConfig vp_config;
+    criAtomExVoicePool_SetDefaultConfigForStandardVoicePool(&vp_config);
+    // Maximum voices
+    vp_config.num_voices = 8;
+    // Enable Streaming
+    vp_config.player_config.streaming_flag = CRI_TRUE;
+    // Maximum sampling rate
+    vp_config.player_config.max_sampling_rate = 48000 << 1;
+   
+    CriAtomExPlayerConfig pf_config;
+    criAtomExPlayer_SetDefaultConfig(&pf_config);
+    // Maximum number of file paths to be held
+    pf_config.max_path_strings = 1;
+    // Maximum length of a file path
+    pf_config.max_path = 256;
     
+    // ADX2を有効にする
+    ADX2::Manager::initialize(pf_config, vp_config);
 }
 
 MainScene::~MainScene()
@@ -36,6 +58,10 @@ MainScene::~MainScene()
     CC_SAFE_RELEASE_NULL(_curBlock);
     CC_SAFE_RELEASE_NULL(_scoreLabel);
     CC_SAFE_RELEASE_NULL(_timeLabel);
+    CC_SAFE_RELEASE_NULL(_cueSheet);
+    
+    // Finish ADX2
+    ADX2::Manager::finalize();
 }
 
 Scene* MainScene::createScene()
@@ -160,8 +186,20 @@ bool MainScene::init()
     // Add those event listener
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
     
+    // Load cuesheet(s)
+    auto cueSheet = ADX2::CueSheet::create("adx2/CBlocks.acf",
+                                           "adx2/main.acb");
+    this->setCueSheet(cueSheet);
+    
+    _cueSheet->setAisacById(2, 0.0f);
+    _cueSheet->updateAll();
     this->scheduleUpdate();
     return true;
+}
+
+void MainScene::onEnterTransitionDidFinish(){
+    // メインBGMを鳴らす
+    _cueSheet->playCueByID(CRI_MAIN_BGM);
 }
 
 
@@ -329,6 +367,7 @@ bool MainScene::checkDeletion()
         auto baseScore = 10 + _simCount - 3;
         auto comboMultiplyer = (_combo < 15 ? _combo - 1 : 15);
         _score = _score + baseScore * powf(2.0f,(comboMultiplyer));
+        _comboLevel = MIN(1.0f, _comboLevel+0.02);
         return true;
     }
     else{
@@ -412,9 +451,20 @@ cocos2d::Vector<Blocks *> MainScene::checkSpawn()
     return std::move(Blocks);
 }
 
+bool MainScene::shouldChangeMusic(){
+    if ((int)(_comboLevel / 0.25) != _curComboLevel){
+        _curComboLevel = (int)(_comboLevel / 0.25);
+        return true;
+    }
+    return false;
+}
+
 //Refresh method
 void MainScene::update(float dt)
 {
+    
+    // Update ADX2
+    ADX2::Manager::getInstance()->update();
     
     // Make new blocks
     this->checkSpawn();
@@ -438,6 +488,16 @@ void MainScene::update(float dt)
         else{
             _aniScore = _score;
         }
+    }
+    
+    
+    // _comboLevel decreases over time, but don't let it go below 0
+    _comboLevel = MAX(0.0, _comboLevel - 0.000075);
+    // Set AISAC!
+    _cueSheet->setAisacById((CriAtomExAisacControlId)2, _comboLevel);
+    
+    if (this->shouldChangeMusic()){
+        _cueSheet->updateAll();
     }
     
     // Timer
