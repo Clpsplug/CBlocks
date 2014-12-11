@@ -16,6 +16,8 @@ using namespace cocos2d;
 const int HORIZONTAL_COUNT = 6;
 /// Number of blocks put vertically
 const int VERTICAL_COUNT = 9;
+/// Number of frames before combo crashes
+const int MAX_CTO = 60;
 
 MainScene::MainScene()
 : _playField(NULL)
@@ -25,11 +27,13 @@ MainScene::MainScene()
 , _combo(0)
 , _simCount(0)
 , _time(0)
+, _comboTimeout(0)
 , _comboLevel(0.0f)
 , _curComboLevel(0.0f)
 , _scoreLabel(nullptr)
 , _timeLabel(nullptr)
 , _cueSheet(nullptr)
+, _ctoBar(nullptr)
 {
     // Initialize ADX2
     CriAtomExStandardVoicePoolConfig vp_config;
@@ -59,6 +63,7 @@ MainScene::~MainScene()
     CC_SAFE_RELEASE_NULL(_scoreLabel);
     CC_SAFE_RELEASE_NULL(_timeLabel);
     CC_SAFE_RELEASE_NULL(_cueSheet);
+    CC_SAFE_RELEASE_NULL(_ctoBar);
     
     // Finish ADX2
     ADX2::Manager::finalize();
@@ -96,10 +101,12 @@ bool MainScene::init()
     // Create infobox sprite(s)
     auto scorePanel = Sprite::create("ScorePanel.png");
     auto timePanel = Sprite::create("TimePanel.png");
+    auto ctoPanel = Sprite::create("CTOPanel.png");
     
     //Set where to show those sprites...
     scorePanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 10.0f));
     timePanel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 - 10.0f, -timePanel->getContentSize().height / 2 + size.height - 10.0f));
+    ctoPanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 50.0f));
     
     // make a node, save it to _playField
     this->setPlayField((Sprite::create("playfield.png")));
@@ -121,6 +128,7 @@ bool MainScene::init()
     this->addChild(_playField);
     this->addChild(scorePanel);
     this->addChild(timePanel);
+    this->addChild(ctoPanel);
     
     // Create Labels for actual info
     // Score Label
@@ -137,8 +145,13 @@ bool MainScene::init()
     timeLabel->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
     this->setTimeLabel(timeLabel);
 
-    
-    
+    auto ctoBar = Sprite::create("CTOBar.png");
+    this->addChild(ctoBar);
+    ctoBar->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f - 73.0f, -scorePanel->getContentSize().height/2 + size.height - 51.0f));
+    ctoBar->setAnchorPoint(cocos2d::Vec2(0.0f, 0.5f));
+    ctoBar->setScale(0.0f, 0.0f);
+    this->setCTOBar(ctoBar);
+
     // Create a touch event listener
     auto listener = EventListenerTouchOneByOne::create();
     // When touched
@@ -368,6 +381,7 @@ bool MainScene::checkDeletion()
         auto comboMultiplyer = (_combo < 15 ? _combo - 1 : 15);
         _score = _score + baseScore * powf(2.0f,(comboMultiplyer));
         _comboLevel = MIN(1.0f, _comboLevel+0.02);
+        _comboTimeout = MAX_CTO;
         return true;
     }
     else{
@@ -492,16 +506,22 @@ void MainScene::update(float dt)
     
     
     // _comboLevel decreases over time, but don't let it go below 0
-    _comboLevel = MAX(0.0, _comboLevel - 0.000075);
+    _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00075 : 0.000075));
     // Set AISAC!
     _cueSheet->setAisacById((CriAtomExAisacControlId)2, _comboLevel);
     
-    if (this->shouldChangeMusic()){
+    //if (this->shouldChangeMusic()){
         _cueSheet->updateAll();
-    }
+    //}
     
     // Timer
     _time += dt;
+    _comboTimeout = MAX(0.0f,_comboTimeout - 1);
+    if (!_comboTimeout){
+        _combo = 0;
+    }
+    
+    _ctoBar->setScale((float)_comboTimeout/(float)MAX_CTO, 1.0f);
     
     // Display the score!
     this->getScoreLabel()->setString(StringUtils::toString(_aniScore));

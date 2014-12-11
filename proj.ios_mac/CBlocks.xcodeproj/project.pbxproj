@@ -10,6 +10,7 @@
 		196EB1A91A28D191002334C5 /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196EB1A81A28D191002334C5 /* MainScene.cpp */; };
 		198FFA811A2D7E2D00D9CBA5 /* img in Resources */ = {isa = PBXBuildFile; fileRef = 198FFA801A2D7E2D00D9CBA5 /* img */; };
 		198FFA881A2D81FC00D9CBA5 /* Blocks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */; };
+		199EE1061A392CAF00FC4634 /* particle in Resources */ = {isa = PBXBuildFile; fileRef = 199EE1051A392CAF00FC4634 /* particle */; };
 		19FB80AD1A31F6EB004C2A84 /* libcri_ware_ios_LE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */; };
 		19FB80AF1A31F80C004C2A84 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FB80AE1A31F80C004C2A84 /* AudioToolbox.framework */; };
 		19FB80B71A31FD93004C2A84 /* CueSheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FB80B31A31FD93004C2A84 /* CueSheet.cpp */; };
@@ -228,6 +229,7 @@
 		198FFA801A2D7E2D00D9CBA5 /* img */ = {isa = PBXFileReference; lastKnownFileType = folder; path = img; sourceTree = "<group>"; };
 		198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocks.cpp; path = ../Classes/Blocks.cpp; sourceTree = "<group>"; };
 		198FFA871A2D81FC00D9CBA5 /* Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocks.h; path = ../Classes/Blocks.h; sourceTree = "<group>"; };
+		199EE1051A392CAF00FC4634 /* particle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = particle; sourceTree = "<group>"; };
 		19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
 		19FB80AE1A31F80C004C2A84 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		19FB80B21A31FD93004C2A84 /* ADX2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADX2Manager.h; sourceTree = "<group>"; };
@@ -502,6 +504,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				199EE1051A392CAF00FC4634 /* particle */,
 				19FB80C21A3218DF004C2A84 /* adx2 */,
 				198FFA801A2D7E2D00D9CBA5 /* img */,
 				1AFAF8B916D35E4900DB1158 /* CloseNormal.png */,
@@ -682,6 +685,7 @@
 				5087E77F17EB970100C73F5D /* Default@2x.png in Resources */,
 				50EF629917ECD46A001EB2F8 /* Icon-100.png in Resources */,
 				1AFAF8BC16D35E4900DB1158 /* CloseNormal.png in Resources */,
+				199EE1061A392CAF00FC4634 /* particle in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				19FB80C31A3218DF004C2A84 /* adx2 in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
