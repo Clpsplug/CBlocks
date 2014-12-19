@@ -804,7 +804,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Atsuhito Udo (N3MP5428Z3)";
 				COMPRESS_PNG_FILES = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
@@ -827,10 +827,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../adx2/libs/ios",
-					/Users/Tosh/cocos,
+					"$(SRCROOT)/../cocos2d",
 					Projects/CBlocks/adx2/libs/ios,
 				);
 				OTHER_LDFLAGS = "-lcri_ware_ios_LE";
+				PROVISIONING_PROFILE = "9cecb78d-253f-4a18-b32a-f5fec590c2a3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
@@ -841,7 +842,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Atsuhito Udo (N3MP5428Z3)";
 				COMPRESS_PNG_FILES = NO;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -862,10 +863,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(SRCROOT)/../adx2/libs/ios",
-					/Users/Tosh/cocos,
+					"$(SRCROOT)/../cocos2d",
 					Projects/CBlocks/adx2/libs/ios,
 				);
 				OTHER_LDFLAGS = "-lcri_ware_ios_LE";
+				PROVISIONING_PROFILE = "9cecb78d-253f-4a18-b32a-f5fec590c2a3";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";

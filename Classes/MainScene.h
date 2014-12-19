@@ -114,6 +114,8 @@ public:
     CC_SYNTHESIZE(float, _time, Time);
     /// Combo Timeout Timer (based on frames)
     CC_SYNTHESIZE(int, _comboTimeout, ComboTimeout);
+    /// Combo Timeout Timer for actual display
+    CC_SYNTHESIZE(int, _aniComboTimeout, AniComboTimeout);
     /// Combo Level (determines the BGM)
     CC_SYNTHESIZE(float, _comboLevel, ComboLevel);
     /// Current Combo Level (Load Reduction)

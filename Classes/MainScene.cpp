@@ -17,7 +17,7 @@ const int HORIZONTAL_COUNT = 6;
 /// Number of blocks put vertically
 const int VERTICAL_COUNT = 9;
 /// Number of frames before combo crashes
-const int MAX_CTO = 60;
+const int MAX_CTO = 90;
 
 MainScene::MainScene()
 : _playField(NULL)
@@ -28,6 +28,7 @@ MainScene::MainScene()
 , _simCount(0)
 , _time(0)
 , _comboTimeout(0)
+, _aniComboTimeout(0)
 , _comboLevel(0.0f)
 , _curComboLevel(0.0f)
 , _scoreLabel(nullptr)
@@ -367,6 +368,14 @@ bool MainScene::checkDeletion()
             if (deletion->isStill()){
                 _simCount++;
             }
+            // パーティクル表示
+            auto explosion = ParticleExplosion::create();
+            explosion->setPosition((deletion->getBlockPos() + Vec2::ONE * 0.5) * deletion->getSize());
+            explosion->setEmissionRate(20.0f);
+            explosion->setAutoRemoveOnFinish(true);
+            explosion->setLife(1.0f);
+            explosion->setLifeVar(1.0f);
+            _playField->addChild(explosion);
             this->deleteBlock(deletion);
         }
         
@@ -491,7 +500,7 @@ void MainScene::update(float dt)
     // Try to delete what to delete
     this->checkDeletion();
     
-    // Animate the score! (My favorite animation)
+    // Animate those data! (My favorite animation)
     if (_score - _aniScore > 3){
         _aniScore = _aniScore + round((_score - _aniScore) / 3);
     }
@@ -503,7 +512,17 @@ void MainScene::update(float dt)
             _aniScore = _score;
         }
     }
-    
+    if (_comboTimeout - _aniComboTimeout > 2){
+        _aniComboTimeout = _aniComboTimeout + round((_comboTimeout - _aniComboTimeout) / 2);
+    }
+    else{
+        if (_comboTimeout > _aniComboTimeout){
+            _aniComboTimeout = _aniComboTimeout + 1;
+        }
+        else{
+            _aniComboTimeout = _comboTimeout;
+        }
+    }
     
     // _comboLevel decreases over time, but don't let it go below 0
     _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00075 : 0.000075));
@@ -521,7 +540,7 @@ void MainScene::update(float dt)
         _combo = 0;
     }
     
-    _ctoBar->setScale((float)_comboTimeout/(float)MAX_CTO, 1.0f);
+    _ctoBar->setScale((float)_aniComboTimeout/(float)MAX_CTO, 1.0f);
     
     // Display the score!
     this->getScoreLabel()->setString(StringUtils::toString(_aniScore));
