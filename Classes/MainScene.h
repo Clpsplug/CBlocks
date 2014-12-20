@@ -124,6 +124,10 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _scoreLabel, ScoreLabel);
     //Time Label (AtlasLabel) (Pointer)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _timeLabel, TimeLabel);
+    //Main Combo Label (AtlasLabel) (Pointer)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _comboLabel, ComboLabel);
+    //Fail Combo Label (AtlasLabel) (This will be blown away when combo is broken)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _failComboLabel, FailComboLabel);
     //Combo Timeout Bar (Temp)
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite * , _ctoBar, CTOBar);
     /// Vector for saving blocks

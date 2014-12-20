@@ -33,6 +33,8 @@ MainScene::MainScene()
 , _curComboLevel(0.0f)
 , _scoreLabel(nullptr)
 , _timeLabel(nullptr)
+, _comboLabel(nullptr)
+, _failComboLabel(nullptr)
 , _cueSheet(nullptr)
 , _ctoBar(nullptr)
 {
@@ -103,12 +105,15 @@ bool MainScene::init()
     auto scorePanel = Sprite::create("ScorePanel.png");
     auto timePanel = Sprite::create("TimePanel.png");
     auto ctoPanel = Sprite::create("CTOPanel.png");
+    auto cbPanel = Sprite::create("ComboLabel.png");
     
     //Set where to show those sprites...
     scorePanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 10.0f));
     timePanel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 - 10.0f, -timePanel->getContentSize().height / 2 + size.height - 10.0f));
     ctoPanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 50.0f));
-    
+    cbPanel->setScale(0.25);
+    cbPanel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.25 / 2 - 75.0f, -cbPanel->getContentSize().height * 0.25 / 2 + size.height - 70.0f));
+    //cbPanel->setPosition(Vec2(0,0));
     // make a node, save it to _playField
     this->setPlayField((Sprite::create("playfield.png")));
     for (int x = 0; x < HORIZONTAL_COUNT; ++x) {
@@ -130,6 +135,7 @@ bool MainScene::init()
     this->addChild(scorePanel);
     this->addChild(timePanel);
     this->addChild(ctoPanel);
+    this->addChild(cbPanel);
     
     // Create Labels for actual info
     // Score Label
@@ -145,6 +151,19 @@ bool MainScene::init()
     timeLabel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 + 52.0f, -timePanel->getContentSize().height/2 + size.height - 32.0f));
     timeLabel->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
     this->setTimeLabel(timeLabel);
+    
+    auto cbLabel = Label::createWithCharMap("digits.png", 17, 17, '0');
+    this->addChild(cbLabel);
+    cbLabel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.25 / 2 + 30.0f, -cbPanel->getContentSize().height * 0.25 / 2 + size.height - 80.0f));
+    cbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));
+    this->setComboLabel(cbLabel);
+    
+    auto failCbLabel = Label::createWithCharMap("digits.png", 17, 17, '0');
+    this->addChild(failCbLabel);
+    failCbLabel->setPosition(Vec2(-100,-100));
+    //failCbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));
+    this->setFailComboLabel(failCbLabel);
+    
 
     auto ctoBar = Sprite::create("CTOBar.png");
     this->addChild(ctoBar);
@@ -535,14 +554,31 @@ void MainScene::update(float dt)
     
     // Timer
     _time += dt;
-    _comboTimeout = MAX(0.0f,_comboTimeout - 1);
+    _comboTimeout = MAX(-1.0f,_comboTimeout - 1);
     if (!_comboTimeout){
+        this->getFailComboLabel()->setString(StringUtils::toString(_combo));
+        this->getFailComboLabel()->setPosition(this->getComboLabel()->getPosition());
+        // パーティクル表示
+        auto explosion = ParticleExplosion::create();
+        explosion->setPosition(this->getComboLabel()->getPosition());
+        explosion->setEmissionRate(200.0f);
+        explosion->setAutoRemoveOnFinish(true);
+        explosion->setLife(1.0f);
+        explosion->setLifeVar(1.0f);
+        this->addChild(explosion);
         _combo = 0;
     }
     
-    _ctoBar->setScale((float)_aniComboTimeout/(float)MAX_CTO, 1.0f);
+    if (this->getFailComboLabel()->getPosition().y > -100){
+        int frame = (this->getComboLabel()->getPosition().x - this->getFailComboLabel()->getPosition().x)/3;
+        this->getFailComboLabel()->setRotation(this->getFailComboLabel()->getRotation() + 30.0f);
+        this->getFailComboLabel()->setPosition(Vec2(this->getFailComboLabel()->getPosition().x - 3, this->getComboLabel()->getPosition().y + (-powf(frame - (powf(40,0.5)), 2) + 40.0f)));
+    }
+    
+    _ctoBar->setScale(MAX(0.0f,(float)_aniComboTimeout/(float)MAX_CTO), 1.0f);
     
     // Display the score!
     this->getScoreLabel()->setString(StringUtils::toString(_aniScore));
     this->getTimeLabel()->setString(StringUtils::toString(round(_time)));
+    this->getComboLabel()->setString(StringUtils::toString(_combo));
 }
