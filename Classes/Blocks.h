@@ -25,6 +25,11 @@ protected:
     
 public:
     
+    /** A method to prevent instant death of the block
+     *  A call will switch the sort of the block by 1. If the block is "5," then it will be "1"
+     */
+    void changeBlockSort();
+    
     enum class Sort{
         FIRST,
         SECOND,

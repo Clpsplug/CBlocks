@@ -43,6 +43,15 @@ bool Blocks::init()
     return true;
 }
 
+void Blocks::changeBlockSort(){
+    _blockSort = (_blockSort == Sort::FIFTH ? Sort::FIRST : static_cast<Blocks::Sort>((int)_blockSort + 1));
+    // Re-initialize the sprite!
+    Sprite::initWithFile("blocks.png", Rect(Blocks::getSize() * (int)_blockSort,
+                                            0,
+                                            Blocks::getSize(),
+                                            Blocks::getSize()));
+}
+
 Vec2 Blocks::gridToPixel(const cocos2d::Vec2& PosInGrid)
 {
     //That 3.0f is offset!

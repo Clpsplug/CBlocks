@@ -26,6 +26,15 @@ protected:
     
 public:
     
+    /** Game State
+     *  INPLAY : Now playing
+     *  RESULT : Result Screen
+     */
+    enum class GameState{
+        PLAYING,
+        RESULT
+    };
+    
     void update(float dt); //update method
     void onEnterTransitionDidFinish() override; //called when transisiton is over
     
@@ -61,7 +70,7 @@ public:
     bool swapBlocks(Blocks* block0, Blocks* block1);
     
     
-    /** Check if a specified block can be deleted. This will only check "3-block deletion," and this works well
+    /** Check if a specified block can be deleted. This will only check "3-block deletion," and this actually works well
      *  @param block Starting block
      *  @return Vector containing the block to be deleted
      */
@@ -71,6 +80,13 @@ public:
      *  @return whether they are deleted or not
      */
     bool checkDeletion();
+    
+    /** Checks if any block on the field can be deleted, but this is for anti-instant delete.
+     *  @param block the block in question
+     *  @return whether the block in question can be deleted or not.
+     *  @remarks if this returns true, then that block must be changed into a different block
+     */
+    bool checkDeletion(Blocks* block);
     
     /** remove given blocks form the field
      *  effect appiled.
@@ -97,6 +113,9 @@ public:
     bool shouldChangeMusic();
     
     
+    /** What should be done just after the time runs out.
+     */
+    void onResult();
     
     //things to do when creating this scene
     static cocos2d::Scene * createScene();
@@ -136,6 +155,8 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Node*, _playField, PlayField);
     /// Block being selected (Pointer)
     CC_SYNTHESIZE_RETAIN(Blocks *, _curBlock, CurBlock);
+    /// Current State of Gameplay
+    CC_SYNTHESIZE(GameState, _state, State);
     /// ADX2 Cue Sheet (Pointer)
     CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cueSheet, CueSheet);
     

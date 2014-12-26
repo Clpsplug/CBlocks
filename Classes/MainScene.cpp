@@ -17,7 +17,9 @@ const int HORIZONTAL_COUNT = 6;
 /// Number of blocks put vertically
 const int VERTICAL_COUNT = 9;
 /// Number of frames before combo crashes
-const int MAX_CTO = 90;
+const int MAX_CTO = 100;
+/// Time Limit
+const float TIME_LIMIT = 90;
 
 MainScene::MainScene()
 : _playField(NULL)
@@ -26,7 +28,7 @@ MainScene::MainScene()
 , _aniScore(0)
 , _combo(0)
 , _simCount(0)
-, _time(0)
+, _time(TIME_LIMIT)
 , _comboTimeout(0)
 , _aniComboTimeout(0)
 , _comboLevel(0.0f)
@@ -35,28 +37,10 @@ MainScene::MainScene()
 , _timeLabel(nullptr)
 , _comboLabel(nullptr)
 , _failComboLabel(nullptr)
+, _state(GameState::PLAYING)
 , _cueSheet(nullptr)
 , _ctoBar(nullptr)
 {
-    // Initialize ADX2
-    CriAtomExStandardVoicePoolConfig vp_config;
-    criAtomExVoicePool_SetDefaultConfigForStandardVoicePool(&vp_config);
-    // Maximum voices
-    vp_config.num_voices = 8;
-    // Enable Streaming
-    vp_config.player_config.streaming_flag = CRI_TRUE;
-    // Maximum sampling rate
-    vp_config.player_config.max_sampling_rate = 48000 << 1;
-   
-    CriAtomExPlayerConfig pf_config;
-    criAtomExPlayer_SetDefaultConfig(&pf_config);
-    // Maximum number of file paths to be held
-    pf_config.max_path_strings = 1;
-    // Maximum length of a file path
-    pf_config.max_path = 256;
-    
-    // ADX2を有効にする
-    ADX2::Manager::initialize(pf_config, vp_config);
 }
 
 MainScene::~MainScene()
@@ -126,6 +110,25 @@ bool MainScene::init()
             this->addBlock(block);
         }
     }
+    
+    //Check if there are risk of instant death of the blocks
+    for (Blocks * block : _blocks){
+        if (this->checkDeletion(block)){
+            // if there ARE risk of insta-death...
+            // switch the block.
+            block->changeBlockSort();
+            // We will do this for at most 3 times.
+            for (int i = 0; i < 3; i++){
+                if (!(this->checkDeletion(block))){
+                    break;
+                }
+                else{
+                    block->changeBlockSort();
+                }
+            }
+        }
+    }
+    
     //描画位置設定！
     _playField->setPosition(cocos2d::Vec2(size.width / 2.0, size.height / 2.0));
 
@@ -275,6 +278,10 @@ void MainScene::moveBlock(Blocks *block, const cocos2d::Vec2& blockPos)
 
 bool MainScene::swapBlocks(Blocks *block0, Blocks *block1)
 {
+    if (_state == GameState::RESULT){
+        return false;
+    }
+    
     // get the position in PIXEL
     auto position0 = block0->getPosition();
     auto position1 = block1->getPosition();
@@ -417,6 +424,15 @@ bool MainScene::checkDeletion()
     }
 }
 
+bool MainScene::checkDeletion(Blocks * block){
+    BlockVct Blocks = this->checkNeighboringBlocks(block);
+    if (Blocks.size() != 0){
+        // if the block can be deleted it should return true; if so we need to change that block
+        return true;
+    }
+    return false;
+}
+
 void MainScene::deleteBlock(Blocks * block)
 {
     // do nothing if nullptr
@@ -501,9 +517,23 @@ bool MainScene::shouldChangeMusic(){
     return false;
 }
 
+void MainScene::onResult(){
+    auto size = Director::getInstance()->getWinSize();
+    // スコアラベルの追加
+    auto timeupLabel = Label::createWithSystemFont(StringUtils::toString(_score),
+                                                      "Marker Felt",
+                                                      80);
+    timeupLabel->setPosition(Vec2(size.width / 2, size.height / 2));
+    timeupLabel->setString("TIME!!");
+    timeupLabel->enableShadow();
+    this->addChild(timeupLabel);
+}
+
 //Refresh method
 void MainScene::update(float dt)
 {
+    
+    // Common Things to do
     
     // Update ADX2
     ADX2::Manager::getInstance()->update();
@@ -543,39 +573,59 @@ void MainScene::update(float dt)
         }
     }
     
-    // _comboLevel decreases over time, but don't let it go below 0
-    _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00075 : 0.000075));
-    // Set AISAC!
-    _cueSheet->setAisacById((CriAtomExAisacControlId)2, _comboLevel);
-    
-    //if (this->shouldChangeMusic()){
-        _cueSheet->updateAll();
-    //}
-    
-    // Timer
-    _time += dt;
-    _comboTimeout = MAX(-1.0f,_comboTimeout - 1);
-    if (!_comboTimeout){
-        this->getFailComboLabel()->setString(StringUtils::toString(_combo));
-        this->getFailComboLabel()->setPosition(this->getComboLabel()->getPosition());
-        // パーティクル表示
-        auto explosion = ParticleExplosion::create();
-        explosion->setPosition(this->getComboLabel()->getPosition());
-        explosion->setEmissionRate(200.0f);
-        explosion->setAutoRemoveOnFinish(true);
-        explosion->setLife(1.0f);
-        explosion->setLifeVar(1.0f);
-        this->addChild(explosion);
-        _combo = 0;
+    switch (_state) {
+        case GameState::PLAYING:
+            
+            // What should be done while playing the game
+            
+            // _comboLevel decreases over time, but don't let it go below 0
+            _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00075 : 0.000075));
+            // Set AISAC!
+            _cueSheet->setAisacById((CriAtomExAisacControlId)2, _comboLevel);
+            
+            //if (this->shouldChangeMusic()){
+            _cueSheet->updateAll();
+            //}
+            
+            // Timer
+            _time -= dt;
+            _comboTimeout = MAX(-1.0f, _comboTimeout - 1);
+            if (!_comboTimeout){
+                this->getFailComboLabel()->setString(StringUtils::toString(_combo));
+                this->getFailComboLabel()->setPosition(this->getComboLabel()->getPosition());
+                // パーティクル表示
+                auto explosion = ParticleExplosion::create();
+                explosion->setPosition(this->getComboLabel()->getPosition());
+                explosion->setEmissionRate(200.0f);
+                explosion->setAutoRemoveOnFinish(true);
+                explosion->setLife(1.0f);
+                explosion->setLifeVar(1.0f);
+                this->addChild(explosion);
+                _combo = 0;
+                _cueSheet->playCueByID(CRI_MAIN_COMBOBREAK);
+            }
+            
+            if (this->getFailComboLabel()->getPosition().y > -100){
+                int frame = (this->getComboLabel()->getPosition().x - this->getFailComboLabel()->getPosition().x)/3;
+                this->getFailComboLabel()->setRotation(this->getFailComboLabel()->getRotation() + 30.0f);
+                this->getFailComboLabel()->setPosition(Vec2(this->getFailComboLabel()->getPosition().x - 3, this->getComboLabel()->getPosition().y + (-powf(frame - (powf(40,0.5)), 2) + 40.0f)));
+            }
+            _ctoBar->setScale(MAX(0.0f,(float)_aniComboTimeout/(float)MAX_CTO), 1.0f);
+
+            break;
+            
+        case GameState::RESULT:
+            break;
+        default:
+            break;
     }
     
-    if (this->getFailComboLabel()->getPosition().y > -100){
-        int frame = (this->getComboLabel()->getPosition().x - this->getFailComboLabel()->getPosition().x)/3;
-        this->getFailComboLabel()->setRotation(this->getFailComboLabel()->getRotation() + 30.0f);
-        this->getFailComboLabel()->setPosition(Vec2(this->getFailComboLabel()->getPosition().x - 3, this->getComboLabel()->getPosition().y + (-powf(frame - (powf(40,0.5)), 2) + 40.0f)));
+    if (_time < 0){
+        _time = 0;
+        _state = GameState::RESULT;
+        onResult();
     }
     
-    _ctoBar->setScale(MAX(0.0f,(float)_aniComboTimeout/(float)MAX_CTO), 1.0f);
     
     // Display the score!
     this->getScoreLabel()->setString(StringUtils::toString(_aniScore));
