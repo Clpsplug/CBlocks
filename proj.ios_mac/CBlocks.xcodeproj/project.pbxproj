@@ -224,11 +224,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		196EB1A81A28D191002334C5 /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MainScene.cpp; sourceTree = "<group>"; };
-		196EB1AC1A28D19B002334C5 /* MainScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainScene.h; sourceTree = "<group>"; };
+		196EB1A81A28D191002334C5 /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainScene.cpp; path = "../Classes/Game Scenes/MainScene.cpp"; sourceTree = "<group>"; };
+		196EB1AC1A28D19B002334C5 /* MainScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainScene.h; path = "../Classes/Game Scenes/MainScene.h"; sourceTree = "<group>"; };
 		198FFA801A2D7E2D00D9CBA5 /* img */ = {isa = PBXFileReference; lastKnownFileType = folder; path = img; sourceTree = "<group>"; };
-		198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocks.cpp; path = ../Classes/Blocks.cpp; sourceTree = "<group>"; };
-		198FFA871A2D81FC00D9CBA5 /* Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocks.h; path = ../Classes/Blocks.h; sourceTree = "<group>"; };
+		198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocks.cpp; path = "../Classes/Game Parts/Blocks.cpp"; sourceTree = "<group>"; };
+		198FFA871A2D81FC00D9CBA5 /* Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocks.h; path = "../Classes/Game Parts/Blocks.h"; sourceTree = "<group>"; };
 		199EE1051A392CAF00FC4634 /* particle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = particle; sourceTree = "<group>"; };
 		19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
 		19FB80AE1A31F80C004C2A84 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
@@ -237,8 +237,8 @@
 		19FB80B41A31FD93004C2A84 /* CueSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CueSheet.h; sourceTree = "<group>"; };
 		19FB80B51A31FD93004C2A84 /* Manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manager.cpp; sourceTree = "<group>"; };
 		19FB80B61A31FD93004C2A84 /* Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Manager.h; sourceTree = "<group>"; };
-		19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CBlocks_acf.h; sourceTree = "<group>"; };
-		19FB80C11A3218D5004C2A84 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = main.h; sourceTree = "<group>"; };
+		19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CBlocks_acf.h; path = ../Classes/ADX/CBlocks_acf.h; sourceTree = "<group>"; };
+		19FB80C11A3218D5004C2A84 /* main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = main.h; path = ../Classes/ADX/main.h; sourceTree = "<group>"; };
 		19FB80C21A3218DF004C2A84 /* adx2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = adx2; sourceTree = "<group>"; };
 		1AC6FAE5180E9839004C840B /* cocos2d_libs.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cocos2d_libs.xcodeproj; path = ../cocos2d/build/cocos2d_libs.xcodeproj; sourceTree = "<group>"; };
 		1ACB3243164770DE00914215 /* libcurl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcurl.a; path = ../../cocos2dx/platform/third_party/ios/libraries/libcurl.a; sourceTree = "<group>"; };
@@ -363,17 +363,14 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				19E1B6591A5553C900E45B9C /* ADX */,
+				19E1B6551A5552EE00E45B9C /* Game Parts */,
 				19FB80B11A31FD93004C2A84 /* ADX2Manager */,
 				1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */,
 				1AFAF8B416D35DE700DB1158 /* AppDelegate.h */,
-				198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */,
-				198FFA871A2D81FC00D9CBA5 /* Blocks.h */,
-				19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */,
 				1AFAF8B516D35DE700DB1158 /* HelloWorldScene.cpp */,
-				19FB80C11A3218D5004C2A84 /* main.h */,
 				1AFAF8B616D35DE700DB1158 /* HelloWorldScene.h */,
-				196EB1A81A28D191002334C5 /* MainScene.cpp */,
-				196EB1AC1A28D19B002334C5 /* MainScene.h */,
+				19E1B65A1A55541C00E45B9C /* Game Scenes */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -386,6 +383,33 @@
 				5087E76F17EB910900C73F5D /* CBlocks Mac.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		19E1B6551A5552EE00E45B9C /* Game Parts */ = {
+			isa = PBXGroup;
+			children = (
+				198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */,
+				198FFA871A2D81FC00D9CBA5 /* Blocks.h */,
+			);
+			name = "Game Parts";
+			sourceTree = "<group>";
+		};
+		19E1B6591A5553C900E45B9C /* ADX */ = {
+			isa = PBXGroup;
+			children = (
+				19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */,
+				19FB80C11A3218D5004C2A84 /* main.h */,
+			);
+			name = ADX;
+			sourceTree = "<group>";
+		};
+		19E1B65A1A55541C00E45B9C /* Game Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				196EB1A81A28D191002334C5 /* MainScene.cpp */,
+				196EB1AC1A28D19B002334C5 /* MainScene.h */,
+			);
+			name = "Game Scenes";
 			sourceTree = "<group>";
 		};
 		19FB80B11A31FD93004C2A84 /* ADX2Manager */ = {
