@@ -12,6 +12,7 @@
 #include "cocos2d.h"
 #include "ADX2Manager.h"
 #include "Blocks.h"
+#include "ScoreItemLabel.h"
 
 typedef cocos2d::Vector<Blocks *> BlockVct;
 
@@ -112,6 +113,8 @@ public:
      */
     bool shouldChangeMusic();
     
+    bool removeScoreItemLabel(ScoreItemLabel * label);
+    
     
     /** What should be done just after the time runs out.
      */
@@ -147,6 +150,8 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _comboLabel, ComboLabel);
     //Fail Combo Label (AtlasLabel) (This will be blown away when combo is broken)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _failComboLabel, FailComboLabel);
+    //Score Item Labels (AtlasLabel) (These will fly towards the score when player deletes the blocks)
+    CC_SYNTHESIZE(cocos2d::Vector<ScoreItemLabel *>, _scoreItemLabels, ScoreItemLabels);
     //Combo Timeout Bar (Temp)
     CC_SYNTHESIZE_RETAIN(cocos2d::Sprite * , _ctoBar, CTOBar);
     /// Vector for saving blocks

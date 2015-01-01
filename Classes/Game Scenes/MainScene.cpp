@@ -389,6 +389,7 @@ bool MainScene::checkDeletion()
     //if any of them are deleted
     if (finalDeletionList.size() >= 1) {
         _simCount=0;
+        Vec2 silStartPoint;
         // delete the block NOW!
         for (auto deletion : finalDeletionList) {
             if (deletion->isStill()){
@@ -402,6 +403,7 @@ bool MainScene::checkDeletion()
             explosion->setLife(1.0f);
             explosion->setLifeVar(1.0f);
             _playField->addChild(explosion);
+            silStartPoint = _playField->getPosition() - _playField->getContentSize() / 2 + (deletion->getBlockPos() + Vec2::ONE * 0.5) * deletion->getSize();
             this->deleteBlock(deletion);
         }
         
@@ -414,9 +416,14 @@ bool MainScene::checkDeletion()
          */
         auto baseScore = 10 + _simCount - 3;
         auto comboMultiplyer = (_combo < 15 ? _combo - 1 : 15);
-        _score = _score + baseScore * powf(2.0f,(comboMultiplyer));
         _comboLevel = MIN(1.0f, _comboLevel+0.02);
         _comboTimeout = MAX_CTO;
+        auto sil = ScoreItemLabel::create();
+        sil->setScore(baseScore * powf(2.0f,(comboMultiplyer)));
+        sil->setPos(this->getScoreLabel()->getPosition());
+        sil->start(this,silStartPoint);
+        this->addChild(sil);
+        _scoreItemLabels.pushBack(sil);
         return true;
     }
     else{
@@ -512,6 +519,18 @@ cocos2d::Vector<Blocks *> MainScene::checkSpawn()
 bool MainScene::shouldChangeMusic(){
     if ((int)(_comboLevel / 0.25) != _curComboLevel){
         _curComboLevel = (int)(_comboLevel / 0.25);
+        return true;
+    }
+    return false;
+}
+
+bool MainScene::removeScoreItemLabel(ScoreItemLabel * label){
+    // Does _scoreItemLabels contain label?
+    if (_scoreItemLabels.contains(label)) {
+        // Remove from parent node
+        label->removeFromParent();
+        // Remove from _scoreItemLabels
+        _scoreItemLabels.eraseObject(label);
         return true;
     }
     return false;
@@ -626,6 +645,18 @@ void MainScene::update(float dt)
         onResult();
     }
     
+    cocos2d::Vector<ScoreItemLabel*> depletedSil;
+    
+    for(auto sil : _scoreItemLabels){
+        if (sil->getHasEnded()){
+            depletedSil.pushBack(sil);
+        }
+    }
+    
+    for(auto* dsil : depletedSil){
+        _score = _score + dsil->getScore(); //Score increment will be done only when the s.i.l. reaches the score label
+        this->removeScoreItemLabel(dsil);
+    }
     
     // Display the score!
     this->getScoreLabel()->setString(StringUtils::toString(_aniScore));

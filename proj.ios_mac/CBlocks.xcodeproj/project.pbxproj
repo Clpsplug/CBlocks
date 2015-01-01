@@ -11,6 +11,7 @@
 		198FFA811A2D7E2D00D9CBA5 /* img in Resources */ = {isa = PBXBuildFile; fileRef = 198FFA801A2D7E2D00D9CBA5 /* img */; };
 		198FFA881A2D81FC00D9CBA5 /* Blocks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */; };
 		199EE1061A392CAF00FC4634 /* particle in Resources */ = {isa = PBXBuildFile; fileRef = 199EE1051A392CAF00FC4634 /* particle */; };
+		19E1B65D1A5554C800E45B9C /* ScoreItemLabel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */; };
 		19FB80AD1A31F6EB004C2A84 /* libcri_ware_ios_LE.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */; };
 		19FB80AF1A31F80C004C2A84 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 19FB80AE1A31F80C004C2A84 /* AudioToolbox.framework */; };
 		19FB80B71A31FD93004C2A84 /* CueSheet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 19FB80B31A31FD93004C2A84 /* CueSheet.cpp */; };
@@ -230,6 +231,8 @@
 		198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocks.cpp; path = "../Classes/Game Parts/Blocks.cpp"; sourceTree = "<group>"; };
 		198FFA871A2D81FC00D9CBA5 /* Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocks.h; path = "../Classes/Game Parts/Blocks.h"; sourceTree = "<group>"; };
 		199EE1051A392CAF00FC4634 /* particle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = particle; sourceTree = "<group>"; };
+		19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreItemLabel.cpp; path = "../Classes/Game Parts/ScoreItemLabel.cpp"; sourceTree = "<group>"; };
+		19E1B65C1A5554C800E45B9C /* ScoreItemLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreItemLabel.h; path = "../Classes/Game Parts/ScoreItemLabel.h"; sourceTree = "<group>"; };
 		19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
 		19FB80AE1A31F80C004C2A84 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		19FB80B21A31FD93004C2A84 /* ADX2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADX2Manager.h; sourceTree = "<group>"; };
@@ -363,14 +366,14 @@
 		15AA9C4015B7EC450033D6C2 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				19E1B6591A5553C900E45B9C /* ADX */,
-				19E1B6551A5552EE00E45B9C /* Game Parts */,
-				19FB80B11A31FD93004C2A84 /* ADX2Manager */,
 				1AFAF8B316D35DE700DB1158 /* AppDelegate.cpp */,
 				1AFAF8B416D35DE700DB1158 /* AppDelegate.h */,
+				19E1B6591A5553C900E45B9C /* ADX */,
+				19FB80B11A31FD93004C2A84 /* ADX2Manager */,
+				19E1B6551A5552EE00E45B9C /* Game Parts */,
+				19E1B65A1A55541C00E45B9C /* Game Scenes */,
 				1AFAF8B516D35DE700DB1158 /* HelloWorldScene.cpp */,
 				1AFAF8B616D35DE700DB1158 /* HelloWorldScene.h */,
-				19E1B65A1A55541C00E45B9C /* Game Scenes */,
 			);
 			name = Classes;
 			path = ../classes;
@@ -390,6 +393,8 @@
 			children = (
 				198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */,
 				198FFA871A2D81FC00D9CBA5 /* Blocks.h */,
+				19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */,
+				19E1B65C1A5554C800E45B9C /* ScoreItemLabel.h */,
 			);
 			name = "Game Parts";
 			sourceTree = "<group>";
@@ -746,6 +751,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				19E1B65D1A5554C800E45B9C /* ScoreItemLabel.cpp in Sources */,
 				198FFA881A2D81FC00D9CBA5 /* Blocks.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
