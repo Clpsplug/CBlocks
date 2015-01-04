@@ -120,6 +120,10 @@ public:
      */
     void onResult();
     
+    /** Passes on to next scene.
+     */
+    void passOn();
+    
     //things to do when creating this scene
     static cocos2d::Scene * createScene();
     CREATE_FUNC(MainScene);

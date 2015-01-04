@@ -53,7 +53,7 @@ MainScene::~MainScene()
     CC_SAFE_RELEASE_NULL(_ctoBar);
     
     // Finish ADX2
-    ADX2::Manager::finalize();
+    //ADX2::Manager::finalize();
 }
 
 Scene* MainScene::createScene()
@@ -542,10 +542,29 @@ void MainScene::onResult(){
     auto timeupLabel = Label::createWithSystemFont(StringUtils::toString(_score),
                                                       "Marker Felt",
                                                       80);
+    timeupLabel->setScale(0.0f);
     timeupLabel->setPosition(Vec2(size.width / 2, size.height / 2));
     timeupLabel->setString("TIME!!");
     timeupLabel->enableShadow();
+    auto animation1 = ScaleTo::create(0.5f, 1.0f);
+    auto animation1ei = EaseIn::create(animation1, 10.0f);
+    auto blank = ScaleTo::create(2.0f, 1.0f);
+    auto animation2 = ScaleTo::create(0.5f, 0.0f);
+    auto animation2eo = EaseOut::create(animation2, 100.0f);
+    auto switchToNext = CallFunc::create([this](){
+        this->passOn();
+    });
+    auto seq = Sequence::create(animation1ei, animation1ei, blank, animation2, animation2eo, switchToNext, NULL);
+    timeupLabel->runAction(seq);
     this->addChild(timeupLabel);
+}
+
+void MainScene::passOn(){
+    _cueSheet->stop(CRI_MAIN_BGM);
+    _cueSheet->stop(CRI_MAIN_COMBOBREAK);
+    auto scene = MainScene::createScene();
+    auto sceneTr = TransitionFade::create(0.5f,scene);
+    Director::getInstance()->replaceScene(sceneTr);
 }
 
 //Refresh method
@@ -598,7 +617,7 @@ void MainScene::update(float dt)
             // What should be done while playing the game
             
             // _comboLevel decreases over time, but don't let it go below 0
-            _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00075 : 0.000075));
+            _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00150f : 0.000075f));
             // Set AISAC!
             _cueSheet->setAisacById((CriAtomExAisacControlId)2, _comboLevel);
             
@@ -621,6 +640,7 @@ void MainScene::update(float dt)
                 explosion->setLifeVar(1.0f);
                 this->addChild(explosion);
                 _combo = 0;
+                _comboLevel -= 0.10f;
                 _cueSheet->playCueByID(CRI_MAIN_COMBOBREAK);
             }
             

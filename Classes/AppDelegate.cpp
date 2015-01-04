@@ -10,6 +10,7 @@ AppDelegate::AppDelegate() {
 
 AppDelegate::~AppDelegate() 
 {
+    ADX2::Manager::finalize();
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
