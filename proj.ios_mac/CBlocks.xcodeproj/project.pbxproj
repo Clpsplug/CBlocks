@@ -231,6 +231,7 @@
 		198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocks.cpp; path = "../Classes/Game Parts/Blocks.cpp"; sourceTree = "<group>"; };
 		198FFA871A2D81FC00D9CBA5 /* Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocks.h; path = "../Classes/Game Parts/Blocks.h"; sourceTree = "<group>"; };
 		199EE1051A392CAF00FC4634 /* particle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = particle; sourceTree = "<group>"; };
+		19C173AD1A59164D006AEFF3 /* Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Result.h; sourceTree = "<group>"; };
 		19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreItemLabel.cpp; path = "../Classes/Game Parts/ScoreItemLabel.cpp"; sourceTree = "<group>"; };
 		19E1B65C1A5554C800E45B9C /* ScoreItemLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreItemLabel.h; path = "../Classes/Game Parts/ScoreItemLabel.h"; sourceTree = "<group>"; };
 		19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
@@ -404,6 +405,7 @@
 			children = (
 				19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */,
 				19FB80C11A3218D5004C2A84 /* main.h */,
+				19C173AD1A59164D006AEFF3 /* Result.h */,
 			);
 			name = ADX;
 			sourceTree = "<group>";
