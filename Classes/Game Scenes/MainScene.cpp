@@ -85,6 +85,8 @@ bool MainScene::init()
     //Set where to show the sprite; this time it fills the screen up
     backGround->setPosition(cocos2d::Vec2(size.width / 2.0, size.height / 2.0));
     
+    backGround->setScale(2.0f);
+    
     // Create infobox sprite(s)
     auto scorePanel = Sprite::create("ScorePanel.png");
     auto timePanel = Sprite::create("TimePanel.png");
@@ -94,9 +96,9 @@ bool MainScene::init()
     //Set where to show those sprites...
     scorePanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 10.0f));
     timePanel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 - 10.0f, -timePanel->getContentSize().height / 2 + size.height - 10.0f));
-    ctoPanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f, -scorePanel->getContentSize().height/2 + size.height - 50.0f));
-    cbPanel->setScale(0.25);
-    cbPanel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.25 / 2 - 75.0f, -cbPanel->getContentSize().height * 0.25 / 2 + size.height - 70.0f));
+    ctoPanel->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 15.0f, -scorePanel->getContentSize().height/2 + size.height - 110.0f));
+    cbPanel->setScale(0.5);
+    cbPanel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.5 / 2 - 150.0f, -cbPanel->getContentSize().height * 0.5 / 2 + size.height - 140.0f));
     //cbPanel->setPosition(Vec2(0,0));
     // make a node, save it to _playField
     this->setPlayField((Sprite::create("playfield.png")));
@@ -142,26 +144,26 @@ bool MainScene::init()
     
     // Create Labels for actual info
     // Score Label
-    auto label = Label::createWithCharMap("digits.png", 17, 17, '0');
+    auto label = Label::createWithCharMap("digits.png", 34, 34, '0');
     this->addChild(label);
     label->setScaleX(0.67f);
-    label->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width + 10.0f - 7.0f, -scorePanel->getContentSize().height/2 + size.height - 32.0f));
+    label->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width, -scorePanel->getContentSize().height/2 + size.height - 52.0f));
     label->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
     this->setScoreLabel(label);
     
-    auto timeLabel = Label::createWithCharMap("digits.png", 17, 17, '0');
+    auto timeLabel = Label::createWithCharMap("digits.png", 34, 34, '0');
     this->addChild(timeLabel);
-    timeLabel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 + 52.0f, -timePanel->getContentSize().height/2 + size.height - 32.0f));
+    timeLabel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 + 104.0f, -timePanel->getContentSize().height/2 + size.height - 52.0f));
     timeLabel->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
     this->setTimeLabel(timeLabel);
     
-    auto cbLabel = Label::createWithCharMap("digits.png", 17, 17, '0');
+    auto cbLabel = Label::createWithCharMap("digits.png", 34, 34, '0');
     this->addChild(cbLabel);
-    cbLabel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.25 / 2 + 30.0f, -cbPanel->getContentSize().height * 0.25 / 2 + size.height - 80.0f));
+    cbLabel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.5 / 2 + 60.0f, -cbPanel->getContentSize().height * 0.5 / 2 + size.height - 160.0f));
     cbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));
     this->setComboLabel(cbLabel);
     
-    auto failCbLabel = Label::createWithCharMap("digits.png", 17, 17, '0');
+    auto failCbLabel = Label::createWithCharMap("digits.png", 34, 34, '0');
     this->addChild(failCbLabel);
     failCbLabel->setPosition(Vec2(-100,-100));
     //failCbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));
@@ -170,7 +172,7 @@ bool MainScene::init()
 
     auto ctoBar = Sprite::create("CTOBar.png");
     this->addChild(ctoBar);
-    ctoBar->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 10.0f - 73.0f, -scorePanel->getContentSize().height/2 + size.height - 51.0f));
+    ctoBar->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 20.0f - 151.0f, -scorePanel->getContentSize().height/2 + size.height - 112.0f));
     ctoBar->setAnchorPoint(cocos2d::Vec2(0.0f, 0.5f));
     ctoBar->setScale(0.0f, 0.0f);
     this->setCTOBar(ctoBar);

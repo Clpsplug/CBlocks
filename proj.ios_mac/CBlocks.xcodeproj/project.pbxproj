@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1946EBDD1A5FB9F0003361FC /* LogoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1946EBDB1A5FB9F0003361FC /* LogoScene.cpp */; };
+		1946EBE21A5FBB8D003361FC /* logo in Resources */ = {isa = PBXBuildFile; fileRef = 1946EBE11A5FBB8D003361FC /* logo */; };
 		196EB1A91A28D191002334C5 /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196EB1A81A28D191002334C5 /* MainScene.cpp */; };
 		198FFA811A2D7E2D00D9CBA5 /* img in Resources */ = {isa = PBXBuildFile; fileRef = 198FFA801A2D7E2D00D9CBA5 /* img */; };
 		198FFA881A2D81FC00D9CBA5 /* Blocks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */; };
@@ -225,13 +227,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1946EBDB1A5FB9F0003361FC /* LogoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LogoScene.cpp; path = "Game Scenes/LogoScene.cpp"; sourceTree = "<group>"; };
+		1946EBDC1A5FB9F0003361FC /* LogoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoScene.h; path = "Game Scenes/LogoScene.h"; sourceTree = "<group>"; };
+		1946EBE01A5FB9FF003361FC /* logo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = logo.h; path = ADX/logo.h; sourceTree = "<group>"; };
+		1946EBE11A5FBB8D003361FC /* logo */ = {isa = PBXFileReference; lastKnownFileType = folder; path = logo; sourceTree = "<group>"; };
 		196EB1A81A28D191002334C5 /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainScene.cpp; path = "../Classes/Game Scenes/MainScene.cpp"; sourceTree = "<group>"; };
 		196EB1AC1A28D19B002334C5 /* MainScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MainScene.h; path = "../Classes/Game Scenes/MainScene.h"; sourceTree = "<group>"; };
 		198FFA801A2D7E2D00D9CBA5 /* img */ = {isa = PBXFileReference; lastKnownFileType = folder; path = img; sourceTree = "<group>"; };
 		198FFA861A2D81FC00D9CBA5 /* Blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Blocks.cpp; path = "../Classes/Game Parts/Blocks.cpp"; sourceTree = "<group>"; };
 		198FFA871A2D81FC00D9CBA5 /* Blocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Blocks.h; path = "../Classes/Game Parts/Blocks.h"; sourceTree = "<group>"; };
 		199EE1051A392CAF00FC4634 /* particle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = particle; sourceTree = "<group>"; };
-		19C173AD1A59164D006AEFF3 /* Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Result.h; sourceTree = "<group>"; };
+		19C173AD1A59164D006AEFF3 /* Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Result.h; path = ../Classes/ADX/Result.h; sourceTree = "<group>"; };
 		19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreItemLabel.cpp; path = "../Classes/Game Parts/ScoreItemLabel.cpp"; sourceTree = "<group>"; };
 		19E1B65C1A5554C800E45B9C /* ScoreItemLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreItemLabel.h; path = "../Classes/Game Parts/ScoreItemLabel.h"; sourceTree = "<group>"; };
 		19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
@@ -405,6 +411,7 @@
 			children = (
 				19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */,
 				19FB80C11A3218D5004C2A84 /* main.h */,
+				1946EBE01A5FB9FF003361FC /* logo.h */,
 				19C173AD1A59164D006AEFF3 /* Result.h */,
 			);
 			name = ADX;
@@ -413,6 +420,8 @@
 		19E1B65A1A55541C00E45B9C /* Game Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				1946EBDB1A5FB9F0003361FC /* LogoScene.cpp */,
+				1946EBDC1A5FB9F0003361FC /* LogoScene.h */,
 				196EB1A81A28D191002334C5 /* MainScene.cpp */,
 				196EB1AC1A28D19B002334C5 /* MainScene.h */,
 			);
@@ -535,6 +544,7 @@
 		78C7DDAA14EBA5050085D0C2 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				1946EBE11A5FBB8D003361FC /* logo */,
 				199EE1051A392CAF00FC4634 /* particle */,
 				19FB80C21A3218DF004C2A84 /* adx2 */,
 				198FFA801A2D7E2D00D9CBA5 /* img */,
@@ -722,6 +732,7 @@
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
 				5087E78517EB970100C73F5D /* Icon-72.png in Resources */,
 				1AFAF8BD16D35E4900DB1158 /* CloseSelected.png in Resources */,
+				1946EBE21A5FBB8D003361FC /* logo in Resources */,
 				50EF62A317ECD613001EB2F8 /* Icon-50.png in Resources */,
 				5087E78017EB970100C73F5D /* Icon-114.png in Resources */,
 				1AFAF8BE16D35E4900DB1158 /* HelloWorld.png in Resources */,
@@ -756,6 +767,7 @@
 				19E1B65D1A5554C800E45B9C /* ScoreItemLabel.cpp in Sources */,
 				198FFA881A2D81FC00D9CBA5 /* Blocks.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
+				1946EBDD1A5FB9F0003361FC /* LogoScene.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
 				19FB80B71A31FD93004C2A84 /* CueSheet.cpp in Sources */,
 				1AFAF8B716D35DE700DB1158 /* AppDelegate.cpp in Sources */,

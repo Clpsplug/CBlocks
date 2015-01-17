@@ -24,7 +24,7 @@ ScoreItemLabel::~ScoreItemLabel(){
 
 bool ScoreItemLabel::init(){
     
-    this->setCharMap("digits.png", 17, 17, '0');
+    this->setCharMap("digits.png", 34, 34, '0');
     return true;
 }
 

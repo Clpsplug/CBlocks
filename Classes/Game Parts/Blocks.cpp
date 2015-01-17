@@ -54,8 +54,8 @@ void Blocks::changeBlockSort(){
 
 Vec2 Blocks::gridToPixel(const cocos2d::Vec2& PosInGrid)
 {
-    //That 3.0f is offset!
-    return std::move((PosInGrid + Vec2::ONE * 0.5) * Blocks::getSize() + Vec2(3.0f, 3.0f));
+    //That 6.0f is offset!
+    return std::move((PosInGrid + Vec2::ONE * 0.5) * Blocks::getSize() + Vec2(6.0f, 6.0f));
 }
 
 Vec2 Blocks::pixelToGrid(const cocos2d::Vec2& PosInPixel)

@@ -13,7 +13,7 @@
 #include "cocos2d.h"
 
 //size of the block...
-const int BLOCK_SIZE = 36;
+const int BLOCK_SIZE = 72;
 
 ///Blocks Class, aka the subclass of cocos2d::Sprite
 class Blocks :public cocos2d::Sprite
