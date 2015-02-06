@@ -80,7 +80,7 @@ bool MainScene::init()
     
     //Get resolution size
     auto size = director->getWinSize();
-
+    
     //Create a background sprite
     auto backGround = Sprite::create("Back.png");
     
@@ -135,7 +135,7 @@ bool MainScene::init()
     
     //描画位置設定！
     _playField->setPosition(cocos2d::Vec2(size.width / 2.0, size.height / 2.0));
-
+    
     //Add those sprites to parent node
     this->addChild(backGround);
     this->addChild(_playField);
@@ -171,14 +171,14 @@ bool MainScene::init()
     //failCbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));
     this->setFailComboLabel(failCbLabel);
     
-
+    
     auto ctoBar = Sprite::create("CTOBar.png");
     this->addChild(ctoBar);
     ctoBar->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width / 2 + 20.0f - 151.0f, -scorePanel->getContentSize().height/2 + size.height - 112.0f));
     ctoBar->setAnchorPoint(cocos2d::Vec2(0.0f, 0.5f));
     ctoBar->setScale(0.0f, 0.0f);
     this->setCTOBar(ctoBar);
-
+    
     // Create a touch event listener
     auto listener = EventListenerTouchOneByOne::create();
     // When touched
@@ -186,46 +186,72 @@ bool MainScene::init()
         
         if (this->getState() == GameState::RESULT){
             return false;
-        }
-            auto position = touch->getLocation();
-            // Get the block under the finger...
-            auto block = this->getBlockAtByPixel(position);
-        
-            // And make it selected
-            this->setCurBlock(block);
+        }else if (this->getState()== GameState::HAZARDFAIL){
             return true;
+        }
+        auto position = touch->getLocation();
+        // Get the block under the finger...
+        auto block = this->getBlockAtByPixel(position);
+        
+        // And make it selected
+        this->setCurBlock(block);
+        return true;
     };
     // And when dragged...
     listener->onTouchMoved = [this](Touch* touch, Event* event) {
-            // get the block in the destination
-            auto nextBlock = this->getBlockAtByPixel(touch->getLocation());
+        // get the block in the destination
+        auto nextBlock = this->getBlockAtByPixel(touch->getLocation());
         
-            // if both selected block and the block in the destination exists, and are different
-            if (_curBlock != nullptr &&
-                nextBlock != nullptr &&
-                _curBlock != nextBlock) {
+        // if both selected block and the block in the destination exists, and are different
+        if (_curBlock != nullptr &&
+            nextBlock != nullptr &&
+            _curBlock != nextBlock) {
+            
+            // and if those blocks are standstill...
+            if (_curBlock->isStill() && nextBlock->isStill()) {
+                auto cp = _curBlock->getBlockPos();
+                auto np = nextBlock->getBlockPos();
                 
-                // and if those blocks are standstill...
-                if (_curBlock->isStill() && nextBlock->isStill()) {
-                    auto cp = _curBlock->getBlockPos();
-                    auto np = nextBlock->getBlockPos();
+                // and finally, if those are neighboring up/downwards or right/left side...
+                // that is the distance between them squared is equals to 1...
+                if (cp.distanceSquared(np) == 1) {
+                    // We'll swap the block
+                    this->swapBlocks(_curBlock, nextBlock);
                     
-                    // and finally, if those are neighboring up/downwards or right/left side...
-                    // that is the distance between them squared is equals to 1...
-                    if (cp.distanceSquared(np) == 1) {
-                        // We'll swap the block
-                        this->swapBlocks(_curBlock, nextBlock);
-                        
-                        // And unselect the block
-                        this->setCurBlock(nullptr);
-                    }
+                    // And unselect the block
+                    this->setCurBlock(nullptr);
                 }
             }
+        }
     };
     // If the finger is released (or swapping canceled...)
     listener->onTouchEnded = listener->onTouchCancelled = [this](Touch* touch, Event* event) {
+        if (this->getState() == GameState::PLAYING){
             // Unselect the block
             this->setCurBlock(nullptr);
+        }
+        else if (this->getState() == GameState::HAZARDFAIL and _cueSheet->getAisacById(3) >= 0.95f){
+            // Reset Everything but the following and try again
+            // Blocks
+            
+            this->setScore(0);
+            this->setAniScore(0);
+            this->setCombo(0);
+            this->setSimCount(0);
+            this->setTime(TIME_LIMIT);
+            this->setComboTimeout(0);
+            this->setAniComboTimeout(0);
+            this->setComboLevel(0.0f);
+            this->setCurComboLevel(0.0f);
+            
+            //曲を再開
+            _cueSheet->stop(_bgmPBID);
+            _cueSheet->setAisacById(3, 0.0f);
+            this->setBgmPBID(_cueSheet->playCueByID(CRI_MAIN_BGM));
+            
+            this->setState(GameState::PLAYING);
+            
+        }
     };
     // Add those event listener
     this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, this);
@@ -243,7 +269,7 @@ bool MainScene::init()
 
 void MainScene::onEnterTransitionDidFinish(){
     // メインBGMを鳴らす
-    _cueSheet->playCueByID(CRI_MAIN_BGM);
+    this->setBgmPBID(_cueSheet->playCueByID(CRI_MAIN_BGM));
 }
 
 
@@ -261,7 +287,7 @@ Blocks* MainScene::getBlockAt(const cocos2d::Vec2& pos)
 {
     for (auto& block : _blocks) {
         if (pos.equals(block->getBlockPos())) {
-             return block;
+            return block;
         }
     }
     return nullptr;
@@ -269,11 +295,11 @@ Blocks* MainScene::getBlockAt(const cocos2d::Vec2& pos)
 
 Blocks* MainScene::getBlockAtByPixel(const cocos2d::Vec2& pixelPos)
 {
-     // Absolute pos to stage pos
-     auto pfPosition = _playField->convertToNodeSpace(pixelPos);
-     // stage pos to grid pos
-     auto gridPosition = Blocks::pixelToGrid(pfPosition);
-     return this->getBlockAt(gridPosition);
+    // Absolute pos to stage pos
+    auto pfPosition = _playField->convertToNodeSpace(pixelPos);
+    // stage pos to grid pos
+    auto gridPosition = Blocks::pixelToGrid(pfPosition);
+    return this->getBlockAt(gridPosition);
 }
 
 void MainScene::moveBlock(Blocks *block, const cocos2d::Vec2& blockPos)
@@ -311,7 +337,7 @@ bool MainScene::swapBlocks(Blocks *block0, Blocks *block1)
         auto fromPosition = block->getPosition();
         
         block->runAction(Sequence::create(MoveTo::create(duration, toPosition),
-                                           CallFuncN::create([=](Node *node) {
+                                          CallFuncN::create([=](Node *node) {
             auto block = dynamic_cast<Blocks *>(node);
             // move the block here
             this->moveBlock(block, toBlockPosition);
@@ -455,13 +481,13 @@ void MainScene::deleteBlock(Blocks * block)
     const auto duration = 0.5f;
     // animation
     block->runAction(Sequence::create(FadeOut::create(duration),
-                                       CallFuncN::create([this](Node* node) {
+                                      CallFuncN::create([this](Node* node) {
         // delete from the list
         auto block = dynamic_cast<Blocks *>(node);
         _blocks.eraseObject(block);
     }),
-                                       RemoveSelf::create(),
-                                       NULL));
+                                      RemoveSelf::create(),
+                                      NULL));
 }
 
 
@@ -486,7 +512,7 @@ bool MainScene::dropBlock(Blocks *block)
         block->setState(Blocks::State::DROPPING);
         // Drop!
         block->runAction(Sequence::create(MoveBy::create(duration, Vec2(0, distance)),
-                                           CallFuncN::create([this, downPosition] (Node *node) {
+                                          CallFuncN::create([this, downPosition] (Node *node) {
             // After landing
             auto block = dynamic_cast<Blocks *>(node);
             // move the block
@@ -496,7 +522,7 @@ bool MainScene::dropBlock(Blocks *block)
             // do another check for multiple falling
             this->dropBlock(block);
         }),
-                                           NULL));
+                                          NULL));
         return true;
     }
     return false;
@@ -545,8 +571,8 @@ void MainScene::onResult(){
     auto size = Director::getInstance()->getWinSize();
     // スコアラベルの追加
     auto timeupLabel = Label::createWithSystemFont(StringUtils::toString(_score),
-                                                      "Marker Felt",
-                                                      80);
+                                                   "Marker Felt",
+                                                   80);
     timeupLabel->setScale(0.0f);
     timeupLabel->setPosition(Vec2(size.width / 2, size.height / 2));
     timeupLabel->setString("TIME!!");
@@ -583,7 +609,7 @@ void MainScene::update(float dt)
     
     // Make new blocks
     this->checkSpawn();
- 
+    
     // Try to drop what it can drop
     for (auto block : _blocks){
         this->dropBlock(block);
@@ -617,7 +643,7 @@ void MainScene::update(float dt)
     }
     
     //////////////////////////////////////////////////////////////////////////////////////
-    
+    float prevAisac3 = _cueSheet->getAisacById(3);
     switch (_state) {
         case GameState::PLAYING:
             
@@ -667,14 +693,20 @@ void MainScene::update(float dt)
                 this->getFailComboLabel()->setPosition(Vec2(this->getFailComboLabel()->getPosition().x - 3, this->getComboLabel()->getPosition().y + (-powf(frame - (powf(40,0.5)), 2) + 40.0f)));
             }
             _ctoBar->setScale(MAX(0.0f,(float)_aniComboTimeout/(float)MAX_CTO), 1.0f);
-
+            
             break;
             
         case GameState::RESULT:
             break;
         case GameState::HAZARDFAIL:
-            _cueSheet->setAisacById((CriAtomExAisacControlId)3, MIN(1.0f,_cueSheet->getAisacById((CriAtomExAisacControlId)3) + dt/2.0f));
-            
+            _cueSheet->setAisacById((CriAtomExAisacControlId)3, MIN(1.0f, prevAisac3 + dt/3.0f));
+            _cueSheet->updateAll();
+            if (this->getFailComboLabel()->getPosition().y > -100){
+                int frame = (this->getComboLabel()->getPosition().x - this->getFailComboLabel()->getPosition().x)/3;
+                this->getFailComboLabel()->setRotation(this->getFailComboLabel()->getRotation() + 30.0f);
+                this->getFailComboLabel()->setPosition(Vec2(this->getFailComboLabel()->getPosition().x - 3, this->getComboLabel()->getPosition().y + (-powf(frame - (powf(40,0.5)), 2) + 40.0f)));
+            }
+            _ctoBar->setScale(0.0f, 1.0f);
             break;
         default:
             break;

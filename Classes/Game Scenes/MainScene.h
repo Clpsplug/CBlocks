@@ -184,6 +184,9 @@ public:
     /// ADX2 Cue Sheet (Pointer)
     CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cueSheet, CueSheet);
     
+    //Main BGM Play ID
+    CC_SYNTHESIZE(CriAtomExPlaybackId, _bgmPBID, BgmPBID);
+    
 };
 
 #endif
