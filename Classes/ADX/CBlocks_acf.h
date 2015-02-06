@@ -5,7 +5,7 @@
  *  File Path          : C:/Users/Tosh/Documents/CriAtomCraft/CBlocks/Public/CBlocks.acf
  *  File Name          : CBlocks.acf
  *  File Size          : 4,288 bytes
- *  Date Time          : 2014/12/06 14:41
+ *  Date Time          : 2015/02/06 23:57
  *  Target             : Public
  *  Categories         : 1
  *  AISAC Controls     : 16
@@ -34,8 +34,8 @@
 /* AISAC Control List (AISAC Control ID) */
 #define CRI_CBLOCKS_ACF_AISACCONTROL_ANY             ( 0) /* Any  */
 #define CRI_CBLOCKS_ACF_AISACCONTROL_DISTANCE        ( 1) /* Distance  */
-#define CRI_CBLOCKS_ACF_AISACCONTROL_CBLV            ( 2) /* CbLv  */
-#define CRI_CBLOCKS_ACF_AISACCONTROL_AISACCONTROL03  ( 3) /* AisacControl03  */
+#define CRI_CBLOCKS_ACF_AISACCONTROL_CBLV            ( 2) /* CbLv //コンボのつながり具合 */
+#define CRI_CBLOCKS_ACF_AISACCONTROL_FAILORNOT       ( 3) /* FailOrNot //HAZARDモードなどで失敗した場合段階的に１になることで間抜けな音になる */
 #define CRI_CBLOCKS_ACF_AISACCONTROL_AISACCONTROL04  ( 4) /* AisacControl04  */
 #define CRI_CBLOCKS_ACF_AISACCONTROL_AISACCONTROL05  ( 5) /* AisacControl05  */
 #define CRI_CBLOCKS_ACF_AISACCONTROL_AISACCONTROL06  ( 6) /* AisacControl06  */

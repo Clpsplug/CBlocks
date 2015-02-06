@@ -240,9 +240,9 @@
 		19C173AD1A59164D006AEFF3 /* Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Result.h; path = ../Classes/ADX/Result.h; sourceTree = "<group>"; };
 		19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreItemLabel.cpp; path = "../Classes/Game Parts/ScoreItemLabel.cpp"; sourceTree = "<group>"; };
 		19E1B65C1A5554C800E45B9C /* ScoreItemLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreItemLabel.h; path = "../Classes/Game Parts/ScoreItemLabel.h"; sourceTree = "<group>"; };
+		19F02C481A85130900656FA1 /* ADX2Manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADX2Manager.h; path = ../Classes/ADX2Manager/ADX2Manager.h; sourceTree = SOURCE_ROOT; };
 		19FB80AC1A31F6EB004C2A84 /* libcri_ware_ios_LE.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcri_ware_ios_LE.a; path = ../adx2/libs/ios/libcri_ware_ios_LE.a; sourceTree = "<group>"; };
 		19FB80AE1A31F80C004C2A84 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
-		19FB80B21A31FD93004C2A84 /* ADX2Manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ADX2Manager.h; sourceTree = "<group>"; };
 		19FB80B31A31FD93004C2A84 /* CueSheet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CueSheet.cpp; sourceTree = "<group>"; };
 		19FB80B41A31FD93004C2A84 /* CueSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CueSheet.h; sourceTree = "<group>"; };
 		19FB80B51A31FD93004C2A84 /* Manager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Manager.cpp; sourceTree = "<group>"; };
@@ -431,14 +431,14 @@
 		19FB80B11A31FD93004C2A84 /* ADX2Manager */ = {
 			isa = PBXGroup;
 			children = (
-				19FB80B21A31FD93004C2A84 /* ADX2Manager.h */,
+				19F02C481A85130900656FA1 /* ADX2Manager.h */,
 				19FB80B31A31FD93004C2A84 /* CueSheet.cpp */,
 				19FB80B41A31FD93004C2A84 /* CueSheet.h */,
 				19FB80B51A31FD93004C2A84 /* Manager.cpp */,
 				19FB80B61A31FD93004C2A84 /* Manager.h */,
 			);
 			name = ADX2Manager;
-			path = ../../../Downloads/ccadx2manager.git/ADX2Manager;
+			path = ../Classes/ADX2Manager;
 			sourceTree = "<group>";
 		};
 		1AC6FAE6180E9839004C840B /* Products */ = {

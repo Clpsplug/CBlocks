@@ -33,11 +33,13 @@ MainScene::MainScene()
 , _aniComboTimeout(0)
 , _comboLevel(0.0f)
 , _curComboLevel(0.0f)
+, _hasStarted(false)
 , _scoreLabel(nullptr)
 , _timeLabel(nullptr)
 , _comboLabel(nullptr)
 , _failComboLabel(nullptr)
 , _state(GameState::PLAYING)
+, _gameMode(GameMode::HAZARD)
 , _cueSheet(nullptr)
 , _ctoBar(nullptr)
 {
@@ -181,6 +183,10 @@ bool MainScene::init()
     auto listener = EventListenerTouchOneByOne::create();
     // When touched
     listener->onTouchBegan = [this](Touch* touch, Event* event) {
+        
+        if (this->getState() == GameState::RESULT){
+            return false;
+        }
             auto position = touch->getLocation();
             // Get the block under the finger...
             auto block = this->getBlockAtByPixel(position);
@@ -280,9 +286,6 @@ void MainScene::moveBlock(Blocks *block, const cocos2d::Vec2& blockPos)
 
 bool MainScene::swapBlocks(Blocks *block0, Blocks *block1)
 {
-    if (_state == GameState::RESULT){
-        return false;
-    }
     
     // get the position in PIXEL
     auto position0 = block0->getPosition();
@@ -613,6 +616,8 @@ void MainScene::update(float dt)
         }
     }
     
+    //////////////////////////////////////////////////////////////////////////////////////
+    
     switch (_state) {
         case GameState::PLAYING:
             
@@ -627,9 +632,11 @@ void MainScene::update(float dt)
             _cueSheet->updateAll();
             //}
             
-            // Timer
-            _time -= dt;
+            // Timer (Will not change if in Hazard Mode)
+            _time -= (this->getGameMode() == GameMode::NORMAL ? dt : 0.0f);
             _comboTimeout = MAX(-1.0f, _comboTimeout - 1);
+            
+            //Combo is broken here
             if (!_comboTimeout){
                 this->getFailComboLabel()->setString(StringUtils::toString(_combo));
                 this->getFailComboLabel()->setPosition(this->getComboLabel()->getPosition());
@@ -644,6 +651,14 @@ void MainScene::update(float dt)
                 _combo = 0;
                 _comboLevel -= 0.10f;
                 _cueSheet->playCueByID(CRI_MAIN_COMBOBREAK);
+                
+                // if in HAZARD MODE...
+                
+                if (_gameMode == GameMode::HAZARD){
+                    this->setState(GameState::HAZARDFAIL);
+                    _cueSheet->playCueByID(CRI_MAIN_HAZARDFAIL);
+                }
+                
             }
             
             if (this->getFailComboLabel()->getPosition().y > -100){
@@ -656,6 +671,10 @@ void MainScene::update(float dt)
             break;
             
         case GameState::RESULT:
+            break;
+        case GameState::HAZARDFAIL:
+            _cueSheet->setAisacById((CriAtomExAisacControlId)3, MIN(1.0f,_cueSheet->getAisacById((CriAtomExAisacControlId)3) + dt/2.0f));
+            
             break;
         default:
             break;

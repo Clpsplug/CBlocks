@@ -33,7 +33,17 @@ public:
      */
     enum class GameState{
         PLAYING,
-        RESULT
+        RESULT,
+        HAZARDFAIL
+    };
+    
+    /** Game Mode
+     *  NORMAL : Basic Rules applied.
+     *  HAZARD : Get the combo of specific length. Fail, and game over.
+     */
+    enum class GameMode{
+        NORMAL,
+        HAZARD
     };
     
     void update(float dt); //update method
@@ -128,6 +138,7 @@ public:
     static cocos2d::Scene * createScene();
     CREATE_FUNC(MainScene);
     
+    
     /// Current Score
     CC_SYNTHESIZE(int, _score, Score);
     // Score for animation
@@ -146,6 +157,8 @@ public:
     CC_SYNTHESIZE(float, _comboLevel, ComboLevel);
     /// Current Combo Level (Load Reduction)
     CC_SYNTHESIZE(int, _curComboLevel, CurComboLevel);
+    /// Did the player start destroying blocks?
+    CC_SYNTHESIZE(bool, _hasStarted, HasStarted);
     //Score Label (Atlaslabel) (Pointer)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _scoreLabel, ScoreLabel);
     //Time Label (AtlasLabel) (Pointer)
@@ -166,6 +179,8 @@ public:
     CC_SYNTHESIZE_RETAIN(Blocks *, _curBlock, CurBlock);
     /// Current State of Gameplay
     CC_SYNTHESIZE(GameState, _state, State);
+    /// Current Game Mode
+    CC_SYNTHESIZE(GameMode, _gameMode, GameMode);
     /// ADX2 Cue Sheet (Pointer)
     CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cueSheet, CueSheet);
     
