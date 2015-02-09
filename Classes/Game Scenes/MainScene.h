@@ -165,8 +165,12 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _timeLabel, TimeLabel);
     //Main Combo Label (AtlasLabel) (Pointer)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _comboLabel, ComboLabel);
-    //Fail Combo Label (AtlasLabel) (This will be blown away when combo is broken)
+    //Fail Combo Label (AtlasLabel) (Pointer) (This will be blown away when combo is broken)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _failComboLabel, FailComboLabel);
+    //Game Over Label (Pointer) (Uesd in Hazard mode, when player fails this shows up)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _gameOverLabel, GameOverLabel);
+    //Data Label (Pointer) (Used in Hazard Mode, when player fails this shows up and how much combo you last)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _dataLabel , DataLabel);
     //Score Item Labels (AtlasLabel) (These will fly towards the score when player deletes the blocks)
     CC_SYNTHESIZE(cocos2d::Vector<ScoreItemLabel *>, _scoreItemLabels, ScoreItemLabels);
     //Combo Timeout Bar (Temp)

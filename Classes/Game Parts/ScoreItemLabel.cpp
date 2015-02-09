@@ -19,7 +19,6 @@ ScoreItemLabel::ScoreItemLabel()
 }
 
 ScoreItemLabel::~ScoreItemLabel(){
-
 }
 
 bool ScoreItemLabel::init(){

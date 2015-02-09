@@ -38,6 +38,8 @@ MainScene::MainScene()
 , _timeLabel(nullptr)
 , _comboLabel(nullptr)
 , _failComboLabel(nullptr)
+, _gameOverLabel(nullptr)
+, _dataLabel(nullptr)
 , _state(GameState::PLAYING)
 , _gameMode(GameMode::HAZARD)
 , _cueSheet(nullptr)
@@ -53,6 +55,8 @@ MainScene::~MainScene()
     CC_SAFE_RELEASE_NULL(_timeLabel);
     CC_SAFE_RELEASE_NULL(_cueSheet);
     CC_SAFE_RELEASE_NULL(_ctoBar);
+    CC_SAFE_RELEASE_NULL(_gameOverLabel);
+    CC_SAFE_RELEASE_NULL(_dataLabel);
     
     // Finish ADX2
     //ADX2::Manager::finalize();
@@ -179,6 +183,20 @@ bool MainScene::init()
     ctoBar->setScale(0.0f, 0.0f);
     this->setCTOBar(ctoBar);
     
+    auto gameoverLabel = Label::createWithSystemFont("GAME OVER", "Marker Felt", 96);
+    this->addChild(gameoverLabel);
+    gameoverLabel->setPosition(Vec2(director->getWinSize().width / 2, director->getWinSize().height + 50));
+    gameoverLabel->enableShadow();
+    this->setGameOverLabel(gameoverLabel);
+    
+    auto dataLabel = Label::createWithSystemFont("", "Marker Felt", 64);
+    this->addChild(dataLabel);
+    dataLabel->setPosition(Vec2(director->getWinSize().width / 2, director->getWinSize().height + 50));
+    dataLabel->enableShadow();
+    dataLabel->setColor(Color3B::YELLOW);
+    dataLabel->enableGlow(Color4B::BLACK);
+    this->setDataLabel(dataLabel);
+    
     // Create a touch event listener
     auto listener = EventListenerTouchOneByOne::create();
     // When touched
@@ -233,6 +251,12 @@ bool MainScene::init()
         else if (this->getState() == GameState::HAZARDFAIL and _cueSheet->getAisacById(3) >= 0.95f){
             // Reset Everything but the following and try again
             // Blocks
+            
+            this->getGameOverLabel()->runAction(MoveTo::create(0.5f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height + 50)));
+            
+            auto eraseData = CallFunc::create([this](){this->getDataLabel()->setString("");});
+            this->getDataLabel()->runAction(Sequence::create(MoveTo::create(0.5f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height + 50)),eraseData,NULL));
+
             
             this->setScore(0);
             this->setAniScore(0);
@@ -562,6 +586,7 @@ bool MainScene::removeScoreItemLabel(ScoreItemLabel * label){
         label->removeFromParent();
         // Remove from _scoreItemLabels
         _scoreItemLabels.eraseObject(label);
+        
         return true;
     }
     return false;
@@ -674,6 +699,7 @@ void MainScene::update(float dt)
                 explosion->setLife(1.0f);
                 explosion->setLifeVar(1.0f);
                 this->addChild(explosion);
+                auto lastcombo = _combo;
                 _combo = 0;
                 _comboLevel -= 0.10f;
                 _cueSheet->playCueByID(CRI_MAIN_COMBOBREAK);
@@ -682,6 +708,14 @@ void MainScene::update(float dt)
                 
                 if (_gameMode == GameMode::HAZARD){
                     this->setState(GameState::HAZARDFAIL);
+                    this->getDataLabel()->setString("Last : " + StringUtils::toString(lastcombo) + " combo\nTap the screen to retry.");
+                    auto movegameover = MoveTo::create(2.0f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height * 0.6));
+                    auto movegameover_withEaseOut = EaseOut::create(movegameover, 3.0f);
+                    auto movedata = MoveTo::create(2.0f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height * 0.4));
+                    auto movedata_withEaseOut = EaseOut::create(movedata, 3.0f);
+                    
+                    this->getGameOverLabel()->runAction(movegameover_withEaseOut);
+                    this->getDataLabel()->runAction(movedata_withEaseOut);
                     _cueSheet->playCueByID(CRI_MAIN_HAZARDFAIL);
                 }
                 
