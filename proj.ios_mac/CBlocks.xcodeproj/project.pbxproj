@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		192C944F1AEB2F97008497E3 /* MenuScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 192C944D1AEB2F97008497E3 /* MenuScene.cpp */; };
 		1946EBDD1A5FB9F0003361FC /* LogoScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1946EBDB1A5FB9F0003361FC /* LogoScene.cpp */; };
 		1946EBE21A5FBB8D003361FC /* logo in Resources */ = {isa = PBXBuildFile; fileRef = 1946EBE11A5FBB8D003361FC /* logo */; };
 		196EB1A91A28D191002334C5 /* MainScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 196EB1A81A28D191002334C5 /* MainScene.cpp */; };
@@ -227,6 +228,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		192C944D1AEB2F97008497E3 /* MenuScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MenuScene.cpp; path = "../Classes/Game Scenes/MenuScene.cpp"; sourceTree = "<group>"; };
+		192C944E1AEB2F97008497E3 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MenuScene.h; path = "../Classes/Game Scenes/MenuScene.h"; sourceTree = "<group>"; };
 		1946EBDB1A5FB9F0003361FC /* LogoScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LogoScene.cpp; path = "Game Scenes/LogoScene.cpp"; sourceTree = "<group>"; };
 		1946EBDC1A5FB9F0003361FC /* LogoScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LogoScene.h; path = "Game Scenes/LogoScene.h"; sourceTree = "<group>"; };
 		1946EBE01A5FB9FF003361FC /* logo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = logo.h; path = ADX/logo.h; sourceTree = "<group>"; };
@@ -424,6 +427,8 @@
 				1946EBDC1A5FB9F0003361FC /* LogoScene.h */,
 				196EB1A81A28D191002334C5 /* MainScene.cpp */,
 				196EB1AC1A28D19B002334C5 /* MainScene.h */,
+				192C944D1AEB2F97008497E3 /* MenuScene.cpp */,
+				192C944E1AEB2F97008497E3 /* MenuScene.h */,
 			);
 			name = "Game Scenes";
 			sourceTree = "<group>";
@@ -765,6 +770,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E1B65D1A5554C800E45B9C /* ScoreItemLabel.cpp in Sources */,
+				192C944F1AEB2F97008497E3 /* MenuScene.cpp in Sources */,
 				198FFA881A2D81FC00D9CBA5 /* Blocks.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				1946EBDD1A5FB9F0003361FC /* LogoScene.cpp in Sources */,

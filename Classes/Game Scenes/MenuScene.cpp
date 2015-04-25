@@ -61,13 +61,13 @@ bool MenuScene::init(){
     });
     auto NormalBtn = MenuItemLabel::create(NormalLbl, [this](Ref *sender){
         this->unscheduleUpdate();
-        auto scene = MainScene::createScene();
+        auto scene = MainScene::createScene(0);
         auto sceneTr = TransitionFade::create(1.0f,scene);
         Director::getInstance()->replaceScene(sceneTr);
     });
     auto HazardBtn = MenuItemLabel::create(HazardLbl, [this](Ref *sender){
         this->unscheduleUpdate();
-        auto scene = MainScene::createScene();
+        auto scene = MainScene::createScene(1);
         auto sceneTr = TransitionFade::create(1.0f,scene);
         Director::getInstance()->replaceScene(sceneTr);
     });
@@ -87,13 +87,13 @@ bool MenuScene::init(){
     this->setPlayMenuItems(playMenuItems);
     
     auto mainMenu = Menu::createWithArray(_mainMenuItems);
-    mainMenu->alignItemsVerticallyWithPadding(15); // ボタンを縦に並べる
+    mainMenu->alignItemsVerticallyWithPadding(30); // ボタンを縦に並べる
     this->setMainMenu(mainMenu);
     this->addChild(mainMenu);
     _mainMenu->setPosition(Director::getInstance()->getWinSize()/2);
 
     auto playMenu = Menu::createWithArray(_playMenuItems);
-    playMenu->alignItemsVerticallyWithPadding(15); // ボタンを縦に並べる
+    playMenu->alignItemsVerticallyWithPadding(30); // ボタンを縦に並べる
     this->setPlayMenu(playMenu);
     this->addChild(playMenu);
     _playMenu->setPosition((Vec2)Director::getInstance()->getWinSize()/2 + Vec2(Director::getInstance()->getWinSize().width,0));
