@@ -34,12 +34,15 @@ MainScene::MainScene()
 , _comboLevel(0.0f)
 , _curComboLevel(0.0f)
 , _hasStarted(false)
+, _restrictControl(false)
+, _goalCombo(100)
 , _scoreLabel(nullptr)
 , _timeLabel(nullptr)
 , _comboLabel(nullptr)
 , _failComboLabel(nullptr)
 , _gameOverLabel(nullptr)
 , _dataLabel(nullptr)
+, _excLabel(nullptr)
 , _state(GameState::PLAYING)
 , _gameMode(GameMode::HAZARD)
 , _cueSheet(nullptr)
@@ -57,6 +60,7 @@ MainScene::~MainScene()
     CC_SAFE_RELEASE_NULL(_ctoBar);
     CC_SAFE_RELEASE_NULL(_gameOverLabel);
     CC_SAFE_RELEASE_NULL(_dataLabel);
+    CC_SAFE_RELEASE_NULL(_excLabel);
     
     // Finish ADX2
     //ADX2::Manager::finalize();
@@ -197,15 +201,22 @@ bool MainScene::init()
     dataLabel->enableGlow(Color4B::BLACK);
     this->setDataLabel(dataLabel);
     
+    auto excLabel = Label::createWithSystemFont("EXCELLENT", "Marker Felt", 96);
+    this->addChild(excLabel);
+    excLabel->setPosition(Vec2(director->getWinSize().width / 2, director->getWinSize().height + 50));
+    excLabel->enableShadow();
+    this->setExcLabel(excLabel);
+
     // Create a touch event listener
     auto listener = EventListenerTouchOneByOne::create();
     // When touched
     listener->onTouchBegan = [this](Touch* touch, Event* event) {
         
-        if (this->getState() == GameState::RESULT){
+        if (_restrictControl == true){
+            if (this->getState()== GameState::HAZARDFAIL){
+                return true;
+            }
             return false;
-        }else if (this->getState()== GameState::HAZARDFAIL){
-            return true;
         }
         auto position = touch->getLocation();
         // Get the block under the finger...
@@ -274,6 +285,7 @@ bool MainScene::init()
             this->setBgmPBID(_cueSheet->playCueByID(CRI_MAIN_BGM));
             
             this->setState(GameState::PLAYING);
+            this->setRestrictControl(false);
             
         }
     };
@@ -479,6 +491,9 @@ bool MainScene::checkDeletion()
         sil->start(this,silStartPoint);
         this->addChild(sil);
         _scoreItemLabels.pushBack(sil);
+        if (_combo == _goalCombo){
+            this->setState(GameState::HAZARDTRANS);
+        }
         return true;
     }
     else{
@@ -632,16 +647,18 @@ void MainScene::update(float dt)
     // Update ADX2
     ADX2::Manager::getInstance()->update();
     
-    // Make new blocks
-    this->checkSpawn();
+    if (this->getState() == GameState::PLAYING){
+        // Make new blocks
+        this->checkSpawn();
     
-    // Try to drop what it can drop
-    for (auto block : _blocks){
-        this->dropBlock(block);
+        // Try to drop what it can drop
+        for (auto block : _blocks){
+            this->dropBlock(block);
+        }
+    
+        // Try to delete what to delete
+        this->checkDeletion();
     }
-    
-    // Try to delete what to delete
-    this->checkDeletion();
     
     // Animate those data! (My favorite animation)
     if (_score - _aniScore > 3){
@@ -717,6 +734,7 @@ void MainScene::update(float dt)
                     this->getGameOverLabel()->runAction(movegameover_withEaseOut);
                     this->getDataLabel()->runAction(movedata_withEaseOut);
                     _cueSheet->playCueByID(CRI_MAIN_HAZARDFAIL);
+                    this->setRestrictControl(true);
                 }
                 
             }
@@ -742,7 +760,38 @@ void MainScene::update(float dt)
             }
             _ctoBar->setScale(0.0f, 1.0f);
             break;
-        default:
+        case GameState::HAZARDTRANS:
+            this->getExcLabel()->runAction(Sequence::create(DelayTime::create(0.5f),
+                                                            EaseOut::create(MoveTo::create(0.5f,Director::getInstance()->getWinSize() / 2),3.0f),
+                                                            CallFunc::create([this](){
+                                                                auto explosion = ParticleExplosion::create();
+                explosion->setPosition(Director::getInstance()->getWinSize()/2);
+                explosion->setAutoRemoveOnFinish(true);
+                this->addChild(explosion);
+
+                                                            }),
+                                                            NULL));
+            auto retryLabel =Label::createWithSystemFont("Retry", "Marker Felt", 40);
+            retryLabel->enableShadow();
+            auto retry = MenuItemLabel::create(retryLabel,[this](Ref* sender){
+                this->unscheduleUpdate();
+                auto scene = MainScene::createScene();
+                auto sceneTr = TransitionFade::create(0.5f, scene);
+                Director::getInstance()->replaceScene(sceneTr);
+                
+            });
+            
+            
+            auto menu = Menu::create(retry, NULL);
+            menu->alignItemsVerticallyWithPadding(15);
+            menu->setPosition(Vec2(Director::getInstance()->getWinSize().width / 2, -200));
+            menu->runAction(Sequence::create(DelayTime::create(0.5f),MoveTo::create(0.5f,(Vec2)Director::getInstance()->getWinSize() / 2 + Vec2(0, -200)), NULL));
+            this->addChild(menu);
+
+            this->setRestrictControl(true);
+            this->setState(GameState::HAZARDCLEAR);
+            this->getCueSheet()->stop(this->getBgmPBID());
+            this->getCueSheet()->playCueByID(CRI_MAIN_HAZARDCLEAR);
             break;
     }
     

@@ -28,13 +28,18 @@ protected:
 public:
     
     /** Game State
-     *  INPLAY : Now playing
+     *  PLAYING : Now playing
      *  RESULT : Result Screen
+     *  HAZARDFAIL : Player failed to achieve dat combo
+     *  HAZARDTRANS : Transition before going to HAZARDCLEAR
+     *  HAZARDCLEAR : Player Succeeded to achieve specified combo
      */
     enum class GameState{
         PLAYING,
         RESULT,
-        HAZARDFAIL
+        HAZARDFAIL,
+        HAZARDTRANS,
+        HAZARDCLEAR
     };
     
     /** Game Mode
@@ -50,7 +55,10 @@ public:
     void onEnterTransitionDidFinish() override; //called when transisiton is over
     
     /** Add block specified
-     *  @param block to be added
+     
+     block
+     
+     :block: block to be added
      */
     void addBlock(Blocks *block);
     
@@ -159,6 +167,10 @@ public:
     CC_SYNTHESIZE(int, _curComboLevel, CurComboLevel);
     /// Did the player start destroying blocks?
     CC_SYNTHESIZE(bool, _hasStarted, HasStarted);
+    /// Is control prohibited?
+    CC_SYNTHESIZE(bool, _restrictControl, RestrictControl);
+    /// Length of combo required to finish a game
+    CC_SYNTHESIZE(int, _goalCombo, GoalCombo);
     //Score Label (Atlaslabel) (Pointer)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _scoreLabel, ScoreLabel);
     //Time Label (AtlasLabel) (Pointer)
@@ -167,10 +179,12 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _comboLabel, ComboLabel);
     //Fail Combo Label (AtlasLabel) (Pointer) (This will be blown away when combo is broken)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _failComboLabel, FailComboLabel);
-    //Game Over Label (Pointer) (Uesd in Hazard mode, when player fails this shows up)
+    //Game Over Label (Pointer) (Used in Hazard mode, when player fails this shows up)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _gameOverLabel, GameOverLabel);
     //Data Label (Pointer) (Used in Hazard Mode, when player fails this shows up and how much combo you last)
     CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _dataLabel , DataLabel);
+    //Excellent Label (AtlasLabel) (Pointer) (Used in Hazard Mode, this shows up when player survives)
+    CC_SYNTHESIZE_RETAIN(cocos2d::Label *, _excLabel, ExcLabel);
     //Score Item Labels (AtlasLabel) (These will fly towards the score when player deletes the blocks)
     CC_SYNTHESIZE(cocos2d::Vector<ScoreItemLabel *>, _scoreItemLabels, ScoreItemLabels);
     //Combo Timeout Bar (Temp)
