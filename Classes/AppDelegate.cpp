@@ -56,7 +56,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils::getInstance()->addSearchPath("img");
 
     // create a scene. it's an autorelease object
-    auto scene = MainScene::createScene();
+    auto scene = LogoScene::createScene();
 
     // run
     director->runWithScene(scene);
