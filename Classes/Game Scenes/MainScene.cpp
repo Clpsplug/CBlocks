@@ -36,7 +36,7 @@ MainScene::MainScene()
 , _curComboLevel(0.0f)
 , _hasStarted(false)
 , _restrictControl(false)
-, _goalCombo(100)
+, _goalCombo(50)
 , _scoreLabel(nullptr)
 , _timeLabel(nullptr)
 , _comboLabel(nullptr)
@@ -45,7 +45,7 @@ MainScene::MainScene()
 , _dataLabel(nullptr)
 , _excLabel(nullptr)
 , _state(GameState::PLAYING)
-, _gameMode(GameMode::HAZARD)
+, _gameMode(GameMode::NORMAL)
 , _cueSheet(nullptr)
 , _ctoBar(nullptr)
 {
@@ -67,11 +67,13 @@ MainScene::~MainScene()
     //ADX2::Manager::finalize();
 }
 
-Scene* MainScene::createScene()
+Scene* MainScene::createScene(int gMode)
 {
     
     auto scene = Scene::create();
     auto layer = MainScene::create();
+    
+    layer->setGameMode((GameMode)gMode);
     
     scene->addChild(layer);
     return scene;
@@ -492,7 +494,7 @@ bool MainScene::checkDeletion()
         sil->start(this,silStartPoint);
         this->addChild(sil);
         _scoreItemLabels.pushBack(sil);
-        if (_combo == _goalCombo){
+        if (_combo == _goalCombo && _gameMode == GameMode::HAZARD){
             this->setState(GameState::HAZARDTRANS);
         }
         return true;
@@ -634,7 +636,7 @@ void MainScene::onResult(){
 void MainScene::passOn(){
     _cueSheet->stop(CRI_MAIN_BGM);
     _cueSheet->stop(CRI_MAIN_COMBOBREAK);
-    auto scene = MainScene::createScene();
+    auto scene = MainScene::createScene((int)_gameMode);
     auto sceneTr = TransitionFade::create(0.5f,scene);
     Director::getInstance()->replaceScene(sceneTr);
 }
@@ -776,7 +778,7 @@ void MainScene::update(float dt)
             retryLabel->enableShadow();
             auto retry = MenuItemLabel::create(retryLabel,[this](Ref* sender){
                 this->unscheduleUpdate();
-                auto scene = MainScene::createScene();
+                auto scene = MainScene::createScene((int)_gameMode);
                 auto sceneTr = TransitionFade::create(0.5f, scene);
                 Director::getInstance()->replaceScene(sceneTr);
                 
