@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include "cocos2d.h"
 
+typedef cocos2d::Vector<cocos2d::MenuItem *> MenuItems;
 
 class MenuScene :public cocos2d::Layer{
   
@@ -30,6 +31,13 @@ public:
     //things to do when creating this scene
     static cocos2d::Scene * createScene();
     CREATE_FUNC(MenuScene);
+    
+    CC_SYNTHESIZE(MenuItems, _mainMenuItems, MainMenuItems);
+    CC_SYNTHESIZE_RETAIN(cocos2d::Menu *, _mainMenu, MainMenu);
+    CC_SYNTHESIZE(MenuItems, _playMenuItems, PlayMenuItems);
+    CC_SYNTHESIZE_RETAIN(cocos2d::Menu *, _playMenu, PlayMenu);
+    CC_SYNTHESIZE(bool, _onMenuTrans, OnMenuTrans);
+    CC_SYNTHESIZE(int, _menuNo, MenuNo);
 
     
 };

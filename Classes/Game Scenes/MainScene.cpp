@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include "MainScene.h"
+#include "MenuScene.h"
 #include "main.h"
 
 using namespace cocos2d;
@@ -22,7 +23,7 @@ const int MAX_CTO = 100;
 const float TIME_LIMIT = 90;
 
 MainScene::MainScene()
-: _playField(NULL)
+: _playField(nullptr)
 , _curBlock(nullptr)
 , _score(0)
 , _aniScore(0)
@@ -781,8 +782,17 @@ void MainScene::update(float dt)
                 
             });
             
+            auto backLabel =Label::createWithSystemFont("Back to Menu", "Marker Felt", 40);
+            backLabel->enableShadow();
+            auto back = MenuItemLabel::create(backLabel,[this](Ref* sender){
+                this->unscheduleUpdate();
+                auto scene = MenuScene::createScene();
+                auto sceneTr = TransitionFade::create(0.5f, scene);
+                Director::getInstance()->replaceScene(sceneTr);
+                
+            });
             
-            auto menu = Menu::create(retry, NULL);
+            auto menu = Menu::create(retry, back, NULL);
             menu->alignItemsVerticallyWithPadding(15);
             menu->setPosition(Vec2(Director::getInstance()->getWinSize().width / 2, -200));
             menu->runAction(Sequence::create(DelayTime::create(0.5f),MoveTo::create(0.5f,(Vec2)Director::getInstance()->getWinSize() / 2 + Vec2(0, -200)), NULL));

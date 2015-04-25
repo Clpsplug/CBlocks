@@ -33,7 +33,7 @@
  * ファイルの時点でパーツとなっているKawazロゴを１つにして、プログラム上でパーツにさせる
  */
 #include "LogoScene.h"
-#include "MainScene.h"
+#include "MenuScene.h"
 #include "CBlocks_acf.h" //TODO:: ここをプロジェクトのacfに置き換えること(ゲーム変数やAISACは使ってないので多分大丈夫)
 #include "logo.h"
 
@@ -301,7 +301,7 @@ void LogoScene::update(float dt){
          * 注意 : this->unscheduleUpdate();を実行しないとsceneが生成され続けて予期しない結果を生むことがあります。
          */
         this->unscheduleUpdate();
-        auto scene = MainScene::createScene();
+        auto scene = MenuScene::createScene();
         auto sceneTr = TransitionFade::create(1.0f,scene);
         Director::getInstance()->replaceScene(sceneTr);
         
