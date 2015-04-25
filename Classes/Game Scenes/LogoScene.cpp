@@ -301,7 +301,8 @@ void LogoScene::update(float dt){
          * 注意 : this->unscheduleUpdate();を実行しないとsceneが生成され続けて予期しない結果を生むことがあります。
          */
         this->unscheduleUpdate();
-        auto scene = MainScene::createScene();
+        auto scene = MainScene::createScene(1);
+        
         auto sceneTr = TransitionFade::create(1.0f,scene);
         Director::getInstance()->replaceScene(sceneTr);
         

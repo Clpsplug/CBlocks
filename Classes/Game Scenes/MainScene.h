@@ -21,7 +21,7 @@ class MainScene :public cocos2d::Layer
 protected:
     MainScene(); //constructor
     virtual ~MainScene(); //destructor
-    bool init() override; //initialization
+    bool init(); //initialization
     
     
     
@@ -143,7 +143,7 @@ public:
     void passOn();
     
     //things to do when creating this scene
-    static cocos2d::Scene * createScene();
+    static cocos2d::Scene * createScene(int gMode);
     CREATE_FUNC(MainScene);
     
     
