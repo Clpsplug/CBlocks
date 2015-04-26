@@ -728,7 +728,7 @@ void MainScene::update(float dt)
                 
                 if (_gameMode == GameMode::HAZARD){
                     this->setState(GameState::HAZARDFAIL);
-                    this->getDataLabel()->setString("Last : " + StringUtils::toString(lastcombo) + " combo\nTap the screen to retry.");
+                    this->getDataLabel()->setString(StringUtils::format("Last : %d combo\nTap the screen to retry.",lastcombo));
                     auto movegameover = MoveTo::create(2.0f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height * 0.6));
                     auto movegameover_withEaseOut = EaseOut::create(movegameover, 3.0f);
                     auto movedata = MoveTo::create(2.0f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height * 0.4));
