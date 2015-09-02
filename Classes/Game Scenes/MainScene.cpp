@@ -157,26 +157,26 @@ bool MainScene::init()
     
     // Create Labels for actual info
     // Score Label
-    auto label = Label::createWithCharMap("digits.png", 34, 34, '0');
+    auto label = Counter::create();
     this->addChild(label);
     label->setScaleX(0.67f);
     label->setPosition(cocos2d::Vec2(scorePanel->getContentSize().width, -scorePanel->getContentSize().height/2 + size.height - 52.0f));
     label->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
     this->setScoreLabel(label);
     
-    auto timeLabel = Label::createWithCharMap("digits.png", 34, 34, '0');
+    auto timeLabel = Counter::create();
     this->addChild(timeLabel);
     timeLabel->setPosition(cocos2d::Vec2(size.width - timePanel->getContentSize().width / 2 + 104.0f, -timePanel->getContentSize().height/2 + size.height - 52.0f));
     timeLabel->setAnchorPoint(cocos2d::Vec2(1.0f, 0.0f));
     this->setTimeLabel(timeLabel);
     
-    auto cbLabel = Label::createWithCharMap("digits.png", 34, 34, '0');
+    auto cbLabel = Counter::create();
     this->addChild(cbLabel);
     cbLabel->setPosition(cocos2d::Vec2(size.width - cbPanel->getContentSize().width * 0.5 / 2 + 60.0f, -cbPanel->getContentSize().height * 0.5 / 2 + size.height - 160.0f));
     cbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));
     this->setComboLabel(cbLabel);
     
-    auto failCbLabel = Label::createWithCharMap("digits.png", 34, 34, '0');
+    auto failCbLabel = Counter::create();
     this->addChild(failCbLabel);
     failCbLabel->setPosition(Vec2(-100,-100));
     //failCbLabel->setAnchorPoint(Vec2(1.0f, 0.0f));

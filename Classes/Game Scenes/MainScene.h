@@ -13,6 +13,7 @@
 #include "ADX2Manager.h"
 #include "Blocks.h"
 #include "ScoreItemLabel.h"
+#include "Counter.h"
 
 typedef cocos2d::Vector<Blocks *> BlockVct;
 
