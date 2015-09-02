@@ -706,15 +706,51 @@ void MainScene::update(float dt)
                 // if in HAZARD MODE...
                 
                 if (_gameMode == GameMode::HAZARD){
+                    
+                    // 失敗を表すメッセージ
                     this->setState(GameState::HAZARDFAIL);
-                    this->getDataLabel()->setString(StringUtils::format("Last : %d combo\nTap the screen to retry.",lastcombo));
+                    this->getDataLabel()->setString(StringUtils::format("Last : %d combo\n Tap to Retry.",lastcombo));
+                    
+                    auto backLabel =Label::createWithSystemFont("Back to Menu", "Marker Felt", 40);
+                    backLabel->enableShadow();
+                    auto back = MenuItemLabel::create(backLabel,[this](Ref* sender){
+                        this->unscheduleUpdate();
+                        auto scene = MenuScene::createScene();
+                        auto sceneTr = TransitionFade::create(0.5f, scene);
+                        Director::getInstance()->replaceScene(sceneTr);
+                        
+                    });
+                    auto menu = Menu::create(back, NULL);
+                    menu->alignItemsVerticallyWithPadding(15);
+                    menu->setPosition(Vec2(Director::getInstance()->getWinSize().width / 2, -200));
+                    this->addChild(menu);
+
+                    // それらにアニメーションをつける
                     auto movegameover = MoveTo::create(2.0f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height * 0.6));
                     auto movegameover_withEaseOut = EaseOut::create(movegameover, 3.0f);
                     auto movedata = MoveTo::create(2.0f, Vec2(Director::getInstance()->getWinSize().width / 2, Director::getInstance()->getWinSize().height * 0.4));
                     auto movedata_withEaseOut = EaseOut::create(movedata, 3.0f);
-                    
                     this->getGameOverLabel()->runAction(movegameover_withEaseOut);
                     this->getDataLabel()->runAction(movedata_withEaseOut);
+                    menu->runAction(Sequence::create(DelayTime::create(0.5f),MoveTo::create(0.5f,(Vec2)Director::getInstance()->getWinSize() / 2 - Vec2(0, Director::getInstance()->getWinSize().height/4)), NULL));
+
+                    // ブロック ボーン
+                    for (Blocks* block : this->getBlocks()){
+                        //まず「画面外の」どこに吹っ飛ぶかを決める
+
+                        auto randRes = rand();
+                        auto moveToX = randRes % 100 * (randRes % 2 ? 1 : -1) + (randRes % 2 ?
+                                                   Blocks::getSize() + Director::getInstance()->getWinSize().width :
+                                                   -Blocks::getSize());
+                        randRes = rand();
+                        auto moveToY = randRes % 100 * (randRes % 2 ? 1 : -1) + (randRes % 2 ?
+                                                   Blocks::getSize() + Director::getInstance()->getWinSize().height :
+                                                   -Blocks::getSize());
+                        auto runawayAnim = MoveTo::create(1.5f,Vec2(moveToX,moveToY) - this->getPlayField()->getPosition() + Vec2(222,330));
+
+                        block->runAction(EaseOut::create(runawayAnim,3.0f));
+                        
+                    }
                     _cueSheet->playCueByID(CRI_MAIN_HAZARDFAIL);
                     this->setRestrictControl(true);
                 }
