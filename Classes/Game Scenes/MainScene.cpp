@@ -747,6 +747,8 @@ void MainScene::update(float dt)
                                                                                  -Blocks::getSize());
                         auto runawayAnim = MoveTo::create(1.5f,Vec2(moveToX,moveToY) - this->getPlayField()->getPosition() + Vec2(222,330));
                         
+                        // 今走っているアクションを一回止めてから実行
+                        block->stopAllActions();
                         block->runAction(EaseOut::create(runawayAnim,3.0f));
                         
                     }
