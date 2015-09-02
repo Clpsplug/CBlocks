@@ -17,3 +17,10 @@ Counter::Counter(){
 Counter::~Counter(){
     
 }
+
+bool Counter::init(){
+    if (!this->setCharMap("digits.png", 34, 34, '0')){
+        return false;
+    }
+    return true;
+}

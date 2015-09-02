@@ -21,7 +21,7 @@ protected:
     bool init() override;
 public:
     
-    
+    CREATE_FUNC(Counter);
 };
 
 #endif /* defined(__CBlocks__Counter__) */
