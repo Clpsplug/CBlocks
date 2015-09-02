@@ -641,6 +641,20 @@ void MainScene::passOn(){
     Director::getInstance()->replaceScene(sceneTr);
 }
 
+int Lerp(int object, int goal, int rate){
+    if(goal - object > rate){
+        return object + round((goal - object) / 3);
+    }
+    else{
+        if(goal > object){
+            return object + 1;
+        }
+        else{
+            return goal;
+        }
+    }
+}
+
 //Refresh method
 void MainScene::update(float dt)
 {
@@ -664,34 +678,14 @@ void MainScene::update(float dt)
     }
     
     // Animate those data! (My favorite animation)
-    if (_score - _aniScore > 3){
-        _aniScore = _aniScore + round((_score - _aniScore) / 3);
-    }
-    else{
-        if (_score > _aniScore){
-            _aniScore = _aniScore + 1;
-        }
-        else{
-            _aniScore = _score;
-        }
-    }
-    if (_comboTimeout - _aniComboTimeout > 2){
-        _aniComboTimeout = _aniComboTimeout + round((_comboTimeout - _aniComboTimeout) / 2);
-    }
-    else{
-        if (_comboTimeout > _aniComboTimeout){
-            _aniComboTimeout = _aniComboTimeout + 1;
-        }
-        else{
-            _aniComboTimeout = _comboTimeout;
-        }
-    }
+    _aniScore = Lerp(_aniScore, _score, 3);
+    _aniComboTimeout = Lerp(_aniComboTimeout,_comboTimeout,2);
     
     //////////////////////////////////////////////////////////////////////////////////////
     float prevAisac3 = _cueSheet->getAisacById(3);
     switch (_state) {
         case GameState::PLAYING:
-            
+        {
             // What should be done while playing the game
             
             // _comboLevel decreases over time, but don't let it go below 0
@@ -750,10 +744,13 @@ void MainScene::update(float dt)
             _ctoBar->setScale(MAX(0.0f,(float)_aniComboTimeout/(float)MAX_CTO), 1.0f);
             
             break;
-            
+        }
         case GameState::RESULT:
+        {
             break;
+        }
         case GameState::HAZARDFAIL:
+        {
             _cueSheet->setAisacById((CriAtomExAisacControlId)3, MIN(1.0f, prevAisac3 + dt/3.0f));
             _cueSheet->updateAll();
             if (this->getFailComboLabel()->getPosition().y > -100){
@@ -763,7 +760,9 @@ void MainScene::update(float dt)
             }
             _ctoBar->setScale(0.0f, 1.0f);
             break;
+        }
         case GameState::HAZARDTRANS:
+        {
             this->getExcLabel()->runAction(Sequence::create(DelayTime::create(0.5f),
                                                             EaseOut::create(MoveTo::create(0.5f,Director::getInstance()->getWinSize() / 2),3.0f),
                                                             CallFunc::create([this](){
@@ -805,6 +804,11 @@ void MainScene::update(float dt)
             this->getCueSheet()->stop(this->getBgmPBID());
             this->getCueSheet()->playCueByID(CRI_MAIN_HAZARDCLEAR);
             break;
+        }
+        case GameState::HAZARDCLEAR:
+        {
+            break;
+        }
     }
     
     if (_time < 0){
