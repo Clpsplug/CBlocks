@@ -688,8 +688,8 @@ void MainScene::update(float dt)
         {
             // What should be done while playing the game
             
-            // _comboLevel decreases over time, but don't let it go below 0
-            _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout == 0 ? 0.00150f : 0.000075f));
+            // _comboLevel decreases over time, but don't let it go below 0. If no combo detected, drop the level down quickly.
+            _comboLevel = MAX(0.0, _comboLevel - (_comboTimeout < 0 ? 0.00150f : 0.000075f));
             // Set AISAC!
             _cueSheet->setAisacById((CriAtomExAisacControlId)2, _comboLevel);
             
@@ -736,6 +736,7 @@ void MainScene::update(float dt)
                 
             }
             
+            // コンボが切れた時の演出。普段演出用ラベルは画面下に控えているのだが、上に出てきたらすぐ回転しながら落とす
             if (this->getFailComboLabel()->getPosition().y > -100){
                 int frame = (this->getComboLabel()->getPosition().x - this->getFailComboLabel()->getPosition().x)/3;
                 this->getFailComboLabel()->setRotation(this->getFailComboLabel()->getRotation() + 30.0f);
@@ -751,8 +752,11 @@ void MainScene::update(float dt)
         }
         case GameState::HAZARDFAIL:
         {
+            // HAZARDモード時の失敗演出
+            // 曲が間抜けになる
             _cueSheet->setAisacById((CriAtomExAisacControlId)3, MIN(1.0f, prevAisac3 + dt/3.0f));
             _cueSheet->updateAll();
+            // PLAYINGからこの状態になるのが早すぎるとコンボの数字が落ちていく演出が途中で止まるのでしっかり落としておく
             if (this->getFailComboLabel()->getPosition().y > -100){
                 int frame = (this->getComboLabel()->getPosition().x - this->getFailComboLabel()->getPosition().x)/3;
                 this->getFailComboLabel()->setRotation(this->getFailComboLabel()->getRotation() + 30.0f);
