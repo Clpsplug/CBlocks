@@ -643,7 +643,7 @@ void MainScene::passOn(){
 
 int Lerp(int object, int goal, int rate){
     if(goal - object > rate){
-        return object + round((goal - object) / 3);
+        return object + round((goal - object) / rate);
     }
     else{
         if(goal > object){
