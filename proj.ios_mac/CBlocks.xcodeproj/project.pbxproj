@@ -244,6 +244,7 @@
 		199EE1051A392CAF00FC4634 /* particle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = particle; sourceTree = "<group>"; };
 		19C173AD1A59164D006AEFF3 /* Result.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Result.h; path = ../Classes/ADX/Result.h; sourceTree = "<group>"; };
 		19C3C7811B97435000662F39 /* MainScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MainScene.cpp; path = "../Classes/Game Scenes/MainScene.cpp"; sourceTree = "<group>"; };
+		19C3C7851B97465700662F39 /* menu.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = menu.h; path = ../Classes/ADX/menu.h; sourceTree = "<group>"; };
 		19E1B65B1A5554C800E45B9C /* ScoreItemLabel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScoreItemLabel.cpp; path = "../Classes/Game Parts/ScoreItemLabel.cpp"; sourceTree = "<group>"; };
 		19E1B65C1A5554C800E45B9C /* ScoreItemLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScoreItemLabel.h; path = "../Classes/Game Parts/ScoreItemLabel.h"; sourceTree = "<group>"; };
 		19F02C481A85130900656FA1 /* ADX2Manager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ADX2Manager.h; path = ../Classes/ADX2Manager/ADX2Manager.h; sourceTree = SOURCE_ROOT; };
@@ -417,6 +418,7 @@
 		19E1B6591A5553C900E45B9C /* ADX */ = {
 			isa = PBXGroup;
 			children = (
+				19C3C7851B97465700662F39 /* menu.h */,
 				19FB80C01A3218CF004C2A84 /* CBlocks_acf.h */,
 				19FB80C11A3218D5004C2A84 /* main.h */,
 				1946EBE01A5FB9FF003361FC /* logo.h */,

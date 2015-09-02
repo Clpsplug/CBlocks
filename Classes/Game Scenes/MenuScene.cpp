@@ -16,13 +16,16 @@ MenuScene::MenuScene()
 , _mainMenu(nullptr)
 , _playMenu(nullptr)
 , _menuNo(0)
+, _cuesheet(nullptr)
 {
     //
 }
 
 MenuScene::~MenuScene()
 {
-    //
+    CC_SAFE_RELEASE_NULL(_mainMenu);
+    CC_SAFE_RELEASE_NULL(_playMenu);
+    CC_SAFE_RELEASE_NULL(_cuesheet);
 }
 
 Scene* MenuScene::createScene()
@@ -97,6 +100,11 @@ bool MenuScene::init(){
     this->setPlayMenu(playMenu);
     this->addChild(playMenu);
     _playMenu->setPosition((Vec2)Director::getInstance()->getWinSize()/2 + Vec2(Director::getInstance()->getWinSize().width,0));
+
+    auto cueSheet = ADX2::CueSheet::create("adx2/CBlocks.acf",
+                                           "adx2/menu.acb");
+    this->setCueSheet(cueSheet);
+
     
     this->scheduleUpdate();
 
@@ -105,7 +113,7 @@ bool MenuScene::init(){
 }
 
 void MenuScene::onEnterTransitionDidFinish(){
-    
+    this->getCueSheet()->playCueByID(CRI_MENU_BGM);
 }
 
 void MenuScene::update(float dt){

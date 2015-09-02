@@ -11,6 +11,8 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
+#include "ADX2Manager.h"
+#include "menu.h"
 
 typedef cocos2d::Vector<cocos2d::MenuItem *> MenuItems;
 
@@ -38,6 +40,7 @@ public:
     CC_SYNTHESIZE_RETAIN(cocos2d::Menu *, _playMenu, PlayMenu);
     CC_SYNTHESIZE(bool, _onMenuTrans, OnMenuTrans);
     CC_SYNTHESIZE(int, _menuNo, MenuNo);
+    CC_SYNTHESIZE_RETAIN(ADX2::CueSheet *, _cuesheet, CueSheet);
 
     
 };
