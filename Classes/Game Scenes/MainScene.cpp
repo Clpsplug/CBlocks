@@ -231,6 +231,11 @@ bool MainScene::init()
     };
     // And when dragged...
     listener->onTouchMoved = [this](Touch* touch, Event* event) {
+        // if in fail animation of Hazard Mode this is ignored
+        if (this->getState() == GameState::HAZARDFAIL){
+            return;
+        }
+        
         // get the block in the destination
         auto nextBlock = this->getBlockAtByPixel(touch->getLocation());
         
