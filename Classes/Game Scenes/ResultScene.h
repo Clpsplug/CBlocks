@@ -27,7 +27,7 @@ public:
     void update(float dt);
     void onEnterTransitionDidFinish() override;
     
-    static Scene* createScene();
+    static Scene* createScene(int score, int maxCombo, int moves);
     
     
     

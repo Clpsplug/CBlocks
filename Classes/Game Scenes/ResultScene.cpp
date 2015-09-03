@@ -28,7 +28,7 @@ bool ResultScene::init()
     return true;
 }
 
-Scene* ResultScene::createScene()
+Scene* ResultScene::createScene(int score, int maxCombo, int moves)
 {
     auto scene = Scene::create();
     auto layer = ResultScene::create();
